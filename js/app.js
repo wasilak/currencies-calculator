@@ -12,13 +12,14 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", function($scope
   var przygotowanieTabelWalut = function() {
     mainCtrl.kursy.PLN = {
       nazwa_waluty: "PLN - złoty polski",
-      kurs_sredni: 1.00
+      kurs_sredni: 1.00,
+      przelicznik: 1.00
     };
 
     for (var key in mainCtrl.dane.tabela_kursow.pozycja) {
       mainCtrl.kursy[mainCtrl.dane.tabela_kursow.pozycja[key].kod_waluty] = {
         nazwa_waluty: mainCtrl.dane.tabela_kursow.pozycja[key].kod_waluty +  " - " + mainCtrl.dane.tabela_kursow.pozycja[key].nazwa_waluty,
-        kurs_sredni: parseFloat(mainCtrl.dane.tabela_kursow.pozycja[key].kurs_sredni.replace(",", "."))
+        kurs_sredni: parseFloat(mainCtrl.dane.tabela_kursow.pozycja[key].kurs_sredni.replace(",", ".") / mainCtrl.dane.tabela_kursow.pozycja[key].przelicznik)
       };
     }
   };
