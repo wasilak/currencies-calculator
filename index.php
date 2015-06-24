@@ -14,9 +14,6 @@
 
     <div ng-controller="MainController as mainCtrl" ng-cloak class="ng-cloak" class="row">
       <div class="small-12 medium-8 large-6 small-centered columns">
-        <p>{{mainCtrl.date}}</p>
-        <h3>Kwota:</h3>
-        <input type="number" name="" value="" placeholder="Podaj kwotę do przeliczenia..." ng-model="mainCtrl.kwota_from">
         <h3>Przeliczanie z:</h3>
         <select ng-model="mainCtrl.kurs_from" ng-options="key as item.nazwa_waluty for (key , item) in mainCtrl.kursy"></select>
         <p ng-show="mainCtrl.kurs_from">
@@ -30,6 +27,8 @@
           <span class="label">{{mainCtrl.kursy[mainCtrl.kurs_to].kurs_sredni}} PLN</span>
         </p>
 
+        <h3>Kwota:</h3>
+        <input type="number" name="" value="" placeholder="Podaj kwotę do przeliczenia..." ng-model="mainCtrl.kwota_from">
 
         <h5 class="subheader" ng-show="mainCtrl.kwota_to">Wartość w wybranej walucie:</h5>
         <div class="panel callout" ng-show="mainCtrl.kwota_to">
