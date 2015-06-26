@@ -30,7 +30,7 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", fu
 
       mainCtrl.model.kursy[mainCtrl.model.dane.tabela_kursow.pozycja[key].kod_waluty] = {
         nazwa_waluty: mainCtrl.model.dane.tabela_kursow.pozycja[key].kod_waluty +  " - " + mainCtrl.model.dane.tabela_kursow.pozycja[key].nazwa_waluty,
-        kurs_sredni: parseFloat(mainCtrl.model.dane.tabela_kursow.pozycja[key].kurs_sredni.replace(",", ".") / mainCtrl.model.dane.tabela_kursow.pozycja[key].przelicznik)
+        kurs_sredni: parseFloat(mainCtrl.model.dane.tabela_kursow.pozycja[key].kurs_sredni.replace(",", ".") / mainCtrl.model.dane.tabela_kursow.pozycja[key].przelicznik).toFixed(2)
       };
     }
 
