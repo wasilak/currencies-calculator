@@ -2,13 +2,13 @@ var kalkulatorWalut = angular.module("kalkulatorWalut", [], function() {
 
 });
 
-kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", function($scope, $httpp, $interval) {
+kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", function($scope, $http, $interval) {
   var mainCtrl = this;
 
   mainCtrl.model = {};
   mainCtrl.forceDownload = false;
 
-  mainCtrl.resetTabelWalut = function() {
+  mainCtrl.resetTabelaWalut = function() {
     mainCtrl.model.dane = {};
     mainCtrl.model.kursy = {};
     mainCtrl.model.kwota_from = '';
@@ -16,7 +16,7 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", fu
     mainCtrl.model.dataPublikacji = '';
   };
 
-  mainCtrl.przygotowanieTabelWalut = function() {
+  mainCtrl.przygotowanieTabelaWalut = function() {
     mainCtrl.model.kursy.PLN = {
       nazwa_waluty: "PLN - złoty polski",
       kurs_sredni: 1.00,
@@ -50,7 +50,7 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", fu
 
   mainCtrl.pobranieDanych = function() {
 
-    mainCtrl.resetTabelWalut();
+    mainCtrl.resetTabelaWalut();
 
     var requestParams = {
       kalkulatorWalut_csrf: kalkulatorWalut_csrf
@@ -69,7 +69,12 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", fu
         mainCtrl.model.dane = json;
         mainCtrl.model.dataPublikacji = json.tabela_kursow.data_publikacji;
 
-        mainCtrl.przygotowanieTabelWalut();
+        mainCtrl.przygotowanieTabelaWalut();
+
+        if (localStorage) {
+          mainCtrl.model.kurs_from = localStorage.getItem('waluty_kurs_from');
+          mainCtrl.model.kurs_to = localStorage.getItem('waluty_kurs_to');
+        }
     }).error(function(data) {
       console.log(data);
     });
@@ -82,12 +87,22 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", fu
 
   mainCtrl.pobranieDanych();
 
-  $scope.$watch('mainCtrl.model', function() {
+  mainCtrl.calculate = function() {
     if (mainCtrl.model.kurs_from && mainCtrl.model.kurs_to && mainCtrl.model.kwota_from) {
       mainCtrl.model.kwota_to = (mainCtrl.model.kursy[mainCtrl.model.kurs_from].kurs_sredni * mainCtrl.model.kwota_from / mainCtrl.model.kursy[mainCtrl.model.kurs_to].kurs_sredni).toFixed(2);
     } else {
       mainCtrl.model.kwota_to = '';
     }
+  };
+
+  mainCtrl.saveSelection = function(name, value) {
+    if (localStorage && !mainCtrl.forceDownload) {
+      localStorage.setItem(name, value);
+    }
+  };
+
+  $scope.$watch('mainCtrl.model', function() {
+    mainCtrl.calculate();
   }, true);
 
 }]);

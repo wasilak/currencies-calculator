@@ -17,18 +17,19 @@
         <div class="row">
           <div class="small-12 columns">
             <span class="right">{{mainCtrl.model.dataPublikacji}}</span>
+            <hr />
           </div>
         </div>
         <div class="row">
           <div class="small-12 columns">
             <h3>Przeliczanie z:</h3>
-            <select ng-model="mainCtrl.model.kurs_from" ng-options="key as item.nazwa_waluty for (key , item) in mainCtrl.model.kursy"></select>
+            <select ng-model="mainCtrl.model.kurs_from" ng-options="key as item.nazwa_waluty for (key , item) in mainCtrl.model.kursy" ng-change="mainCtrl.saveSelection('waluty_kurs_from', mainCtrl.model.kurs_from)"></select>
             <p ng-show="mainCtrl.model.kurs_from">
               Kurs średni:
               <span class="label">{{mainCtrl.model.kursy[mainCtrl.model.kurs_from].kurs_sredni}} PLN</span>
             </p>
             <h3>Przeliczanie na:</h3>
-            <select ng-model="mainCtrl.model.kurs_to" ng-options="key as item.nazwa_waluty for (key , item) in mainCtrl.model.kursy"></select>
+            <select ng-model="mainCtrl.model.kurs_to" ng-options="key as item.nazwa_waluty for (key , item) in mainCtrl.model.kursy" ng-change="mainCtrl.saveSelection('waluty_kurs_to', mainCtrl.model.kurs_to)"></select>
             <p ng-show="mainCtrl.model.kurs_to">
               Kurs średni:
               <span class="label">{{mainCtrl.model.kursy[mainCtrl.model.kurs_to].kurs_sredni}} PLN</span>
