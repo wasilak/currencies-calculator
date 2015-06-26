@@ -47,9 +47,13 @@
         </div>
         <div class="row">
           <div class="small-12 columns">
-            <div class="text-center">
-              <button href="#" class="button tiny" ng-click="mainCtrl.getData()">pobierz aktualne kursy</button>
-            </div>
+            <a href="#" ng-click="mainCtrl.getData()">
+              <span class="right subheader">pobierz aktualne</span>
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns">
             <div ng-show="mainCtrl.forceDownload && mainCtrl.updateProgress <= 100" class="progress">
               <span class="meter" style="width: {{mainCtrl.updateProgress}}%"></span>
             </div>
