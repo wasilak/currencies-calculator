@@ -2,7 +2,7 @@ var kalkulatorWalut = angular.module("kalkulatorWalut", [], function() {
 
 });
 
-kalkulatorWalut.controller("MainController", ["$scope", "$http", "$timeout", "$interval", function($scope, $http, $timeout, $interval) {
+kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", function($scope, $httpp, $interval) {
   var mainCtrl = this;
 
   mainCtrl.model = {};
@@ -43,9 +43,7 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$timeout", "$i
 
       if (n == iloscWalut) {
         mainCtrl.forceDownload = false;
-        
       }
-      console.log(iloscWalut, n);
     }, 0, iloscWalut);
 
   };
