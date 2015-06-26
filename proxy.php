@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if ($_GET['kalkulatorWalut_csrf'] != $_SESSION['kalkulatorWalut_csrf']) {
+if (!isset($_GET['kalkulatorWalut_csrf']) || $_GET['kalkulatorWalut_csrf'] != $_SESSION['kalkulatorWalut_csrf']) {
     echo 'CSRF token invalid!';
     exit;
 }
@@ -9,18 +9,25 @@ if ($_GET['kalkulatorWalut_csrf'] != $_SESSION['kalkulatorWalut_csrf']) {
 header('Content-type: application/xml');
 
 $adresKursy = 'http://www.nbp.pl/kursy/xml/LastA.xml';
-$cacheLast = __DIR__ . '/cache/last.txt';
 $cacheData = __DIR__ . '/cache/data.xml';
 
+$forceDownload = (isset($_GET['forceDownload']) && 1 == $_GET['forceDownload']) ? true : false;
+
 $dataFromNBP = '';
+$dataFromNBP = file_get_contents($cacheData);
 
-$lastDate = file_get_contents($cacheLast);
-
-if ($lastDate != date("Y-m-d")) {
-    file_put_contents($cacheLast, date("Y-m-d"));
-    $dataFromNBP = file_get_contents($adresKursy);
-    file_put_contents($cacheData, $dataFromNBP);
-} else {
-    $dataFromNBP = file_get_contents($cacheData);
+try {
+    $cachedXML = new SimpleXMLElement($dataFromNBP);
+    $lastDate = $cachedXML->data_publikacji->__toString();
+} catch (Exception $e) {
+    $lastDate = false;
 }
-echo $dataFromNBP; exit;
+
+if (!$lastDate || $lastDate != date("Y-m-d") || $forceDownload) {
+    $dataFromNBP = file_get_contents($adresKursy);
+    $dataFromNBP = new SimpleXMLElement($dataFromNBP);
+    file_put_contents($cacheData, $dataFromNBP->asXML());
+} else {
+    $dataFromNBP = $cachedXML;
+}
+echo $dataFromNBP->asXML(); exit;
