@@ -63,13 +63,16 @@
 
     <script src="bower_components/x2js/xml2json.min.js" type="text/javascript"></script>
     <script src="bower_components/angularjs/angular.min.js" type="text/javascript"></script>
-    <script src="js/app.js" type="text/javascript"></script>
+    <script src="js/app/app.js" type="text/javascript"></script>
+    <script src="js/app/controllers/MainController.js" type="text/javascript"></script>
 
     <?php $key = 'dsakcnasli332432%$#%@$dsASA&&'; ?>
     <?php $_SESSION['kalkulatorWalut_csrf'] = md5($key . time() . $key); ?>
 
     <script>
+      // jshint ignore:start
       var kalkulatorWalut_csrf = '<?php echo $_SESSION['kalkulatorWalut_csrf']; ?>';
+      // jshint ignore:end
     </script>
   </body>
 </html>
