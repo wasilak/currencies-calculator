@@ -1,0 +1,23 @@
+{
+  "name": "currencies-calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wasilak/currencies-calculator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wasilak/currencies-calculator/issues"
+  },
+  "homepage": "https://github.com/wasilak/currencies-calculator#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^2.13.4"
+  }
+}

@@ -1,4 +1,4 @@
-/// <reference path="../angular.d.ts" />
+/// <reference path="../lib/angular/angular.d.ts" />
 
 let kalkulatorWalut = angular.module("kalkulatorWalut", [], function() {
 
@@ -27,3 +27,10 @@ interface RequestParams {
   kalkulatorWalut_csrf :string,
   forceDownload :number
 }
+
+let walutaPL :Kurs = {
+  kod_waluty: 'PLN',
+  nazwa_waluty: "PLN - złoty polski",
+  kurs_sredni: '1.00',
+  przelicznik: '1.00'
+};

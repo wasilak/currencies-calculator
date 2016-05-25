@@ -1,12 +1,12 @@
-/// <reference path="../../xml2json.d.ts" />
+/// <reference path="../../lib/xml2json.d.ts" />
 
 kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", function($scope, $http, $interval) {
   let mainCtrl = this;
-  
+
   let setModel = function(model :Model) {
     mainCtrl.model = model;
   };
-  
+
   setModel({
     dane: {},
     kursy: {},
@@ -14,7 +14,7 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", fu
     kwota_to: '',
     dataPublikacji: ''
   });
-  
+
   mainCtrl.forceDownload = false;
 
   mainCtrl.resetTabelaWalut = function() {
@@ -28,21 +28,16 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", fu
   };
 
   mainCtrl.przygotowanieTabelaWalut = function() :void {
-        
-    setWaluta({
-      kod_waluty: 'PLN',
-      nazwa_waluty: "PLN - złoty polski",
-      kurs_sredni: '1.00',
-      przelicznik: '1.00'
-    });
+
+    setWaluta(walutaPL);
 
     let iloscWalut :number = mainCtrl.model.dane.tabela_kursow.pozycja.length;
     let krokLoadera :number = 100 / iloscWalut;
 
-    for (let element of mainCtrl.model.dane.tabela_kursow.pozycja) {      
+    for (let element of mainCtrl.model.dane.tabela_kursow.pozycja) {
       setWaluta(element);
     }
-    
+
     // just for loader progress bar ;)
     mainCtrl.updateProgress = 0;
     let n :number = 0;
@@ -56,7 +51,7 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", fu
     }, 0, iloscWalut);
 
   };
-  
+
   let setWaluta = function(waluta :Kurs) :void {
     mainCtrl.model.kursy[waluta.kod_waluty] = {
       nazwa_waluty: waluta.kod_waluty +  " - " + waluta.nazwa_waluty,
@@ -76,7 +71,7 @@ kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", fu
     if (mainCtrl.forceDownload) {
       requestParams.forceDownload = 1;
     }
-
+    
     $http.get('proxy.php', {
       params: requestParams,
     }).success(function(data :string) {
