@@ -3,3 +3,5 @@ cache
 sftp-config.json
 node_modules
 js/app/
+.tags
+.tags1
