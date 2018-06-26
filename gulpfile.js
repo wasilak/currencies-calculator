@@ -13,6 +13,10 @@ var stylish = require('jshint-stylish');
 var tsProject = ts.createProject("tsconfig.json");
 
 var files = [
+  './js/src/**/*.ts'
+];
+
+var watchFiles = [
   './js/src/**/*.ts',
   './index.php',
   './proxy.php',
@@ -21,14 +25,14 @@ var files = [
 
 gulp.task('default', function () {
   return gulp.src(files)
-		.pipe(ts(tsProject))
+		.pipe(tsProject())
     .pipe(gulp.dest('./js/'))
     .pipe(livereload());
 });
 
 gulp.task('watch', function() {
   livereload.listen();
-  gulp.watch(files, ['default']);
+  gulp.watch(watchFiles, ['default']);
 });
 
 gulp.task('lint:css', function() {
