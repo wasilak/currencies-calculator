@@ -1,5 +1,3 @@
-/// <reference path="../../lib/xml2json.d.ts" />
-
 module Application.Controllers {
 
     export class MainController {
@@ -20,24 +18,22 @@ module Application.Controllers {
             this.$interval = $interval;
             
             this.emptyModel = {
-              dane: {
-                tabela_kursow: {
-                  data_publikacji: '',
-                  pozycja: []
-                }
+              data: {
+                effectiveDate: '',
+                rates: []
               },
-              kursy: {},
-              kurs_from: '',
-              kurs_to: '',
-              kwota_from: '',
-              kwota_to: '',
-              dataPublikacji: ''
+              rates: {},
+              rate_from: '',
+              rate_to: '',
+              amount_from: '',
+              amount_to: '',
+              effectiveDate: ''
             };
 
             this.setModel(this.emptyModel);
             
             this.forceDownload = false;
-            this.pobranieDanych();
+            this.dataDownload();
 
             $scope.$watch('mainCtrl.model', () :void => {
               this.calculate();
@@ -46,21 +42,21 @@ module Application.Controllers {
         
         private getData = () :void => {
           this.forceDownload = true;
-          this.pobranieDanych();
+          this.dataDownload();
         };
         
         private calculate = () :void => {
-          if (this.model.kurs_from && this.model.kurs_to && this.model.kwota_from) {
-            this.model.kwota_to = (this.model.kursy[this.model.kurs_from].kurs_sredni * parseFloat(this.model.kwota_from) / this.model.kursy[this.model.kurs_to].kurs_sredni).toFixed(2);
+          if (this.model.rate_from && this.model.rate_to && this.model.amount_from) {
+            this.model.amount_to = (this.model.rates[this.model.rate_from].mid * parseFloat(this.model.amount_from) / this.model.rates[this.model.rate_to].mid).toFixed(2);
           } else {
-            this.model.kwota_to = '';
+            this.model.amount_to = '';
           }
         };
         
-        private setWaluta = (waluta :Kurs) :void => {
-          this.model.kursy[waluta.kod_waluty] = {
-            nazwa_waluty: waluta.kod_waluty +  " - " + waluta.nazwa_waluty,
-            kurs_sredni: (parseFloat(waluta.kurs_sredni.replace(",", ".")) / parseFloat(waluta.przelicznik)).toFixed(2)
+        private setCurrency = (currencyToSetup :Rate) :void => {
+          this.model.rates[currencyToSetup.code] = {
+            currency: currencyToSetup.code +  " - " + currencyToSetup.currency,
+            mid: currencyToSetup.mid
           };
         }
         
@@ -74,38 +70,38 @@ module Application.Controllers {
           this.setModel(this.emptyModel);
         };
         
-        private przygotowanieTabelaWalut = () :void => {
-          this.setWaluta(walutaPL);
+        private currencyTablePrepare = () :void => {
+          this.setCurrency(walutaPL);
 
-          let iloscWalut :number = this.model.dane.tabela_kursow.pozycja.length;
-          let krokLoadera :number = 100 / iloscWalut;
+          let currencyNumber :number = this.model.data.rates.length;
+          let loaderStep :number = 100 / currencyNumber;
 
-          for (let element of this.model.dane.tabela_kursow.pozycja) {
-            this.setWaluta(element);
+          for (let element of this.model.data.rates) {
+            this.setCurrency(element);
           }
 
           // just for loader progress bar ;)
           this.updateProgress = 0;
           let n :number = 0;
           this.$interval(() :void => {
-            this.updateProgress += krokLoadera;
+            this.updateProgress += loaderStep;
             n += 1;
 
-            if (n == iloscWalut) {
+            if (n == currencyNumber) {
               this.forceDownload = false;
             }
-          }, 0, iloscWalut);
+          }, 0, currencyNumber);
         };
         
         private setModel = (model :Model) :void => {
           this.model = model;
         };
         
-        private pobranieDanych = () => {          
+        private dataDownload = () => {          
           this.resetTabelaWalut();
 
           let requestParams :RequestParams = {
-            kalkulatorWalut_csrf: window.kalkulatorWalut_csrf,
+            currenciesCalulator_csrf: window.currenciesCalulator_csrf,
             forceDownload: 0
           };
 
@@ -115,18 +111,17 @@ module Application.Controllers {
           
           this.$http.get('proxy.php', {
             params: requestParams,
-          }).success((data :string) => {
+          }).success((data :RatesTable) => {
 
-              let x2js :IX2JS = new X2JS();
-              let json :ModelDane = <ModelDane>x2js.xml_str2json(data);
-              this.model.dane = json;
-              this.model.dataPublikacji = this.model.dane.tabela_kursow.data_publikacji;
+              let ratesTable :RatesTable = <RatesTable>data;
+              this.model.data = ratesTable;
+              this.model.effectiveDate = ratesTable.effectiveDate;
 
-              this.przygotowanieTabelaWalut();
+              this.currencyTablePrepare();
 
               if (localStorage) {
-                this.model.kurs_from = localStorage.getItem('waluty_kurs_from');
-                this.model.kurs_to = localStorage.getItem('waluty_kurs_to');
+                this.model.rate_from = localStorage.getItem('waluty_rate_from');
+                this.model.rate_to = localStorage.getItem('waluty_rate_to');
               }
           }).error((data :Object) => {
             console.log(data);

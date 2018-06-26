@@ -1,47 +1,41 @@
 /// <reference path="../lib/angular/angular.d.ts" />
 
-let kalkulatorWalut = angular.module("kalkulatorWalut", []);
+let currenciesCalulator = angular.module("currenciesCalulator", []);
 
-kalkulatorWalut.controller("MainController", ["$scope", "$http", "$interval", ($scope, $http, $interval) => new Application.Controllers.MainController($scope, $http, $interval) ]);
+currenciesCalulator.controller("MainController", ["$scope", "$http", "$interval", ($scope, $http, $interval) => new Application.Controllers.MainController($scope, $http, $interval) ]);
 
 interface Window {
-    kalkulatorWalut_csrf :string
+    currenciesCalulator_csrf :string
 };
 
-interface Kurs {
-  kod_waluty :string,
-  nazwa_waluty :string,
-  kurs_sredni :string,
-  przelicznik :string
+interface Rate {
+  code :string,
+  currency :string,
+  mid :string,
 }
 
-interface ModelDane {
-  tabela_kursow :TabelaKursow
-}
-
-interface TabelaKursow {
-  data_publikacji :string
-  pozycja :Array<Kurs>
+interface RatesTable {
+  effectiveDate :string
+  rates :Array<Rate>
 }
 
 interface Model {
-  dane :ModelDane,
-  kursy :Object,
-  kurs_from :string,
-  kurs_to :string,
-  kwota_from :string,
-  kwota_to :string,
-  dataPublikacji :string
+  data :RatesTable,
+  rates :Object,
+  rate_from :string,
+  rate_to :string,
+  amount_from :string,
+  amount_to :string,
+  effectiveDate :string
 }
 
 interface RequestParams {
-  kalkulatorWalut_csrf :string,
+  currenciesCalulator_csrf :string,
   forceDownload :number
 }
 
-let walutaPL :Kurs = {
-  kod_waluty: 'PLN',
-  nazwa_waluty: "PLN - złoty polski",
-  kurs_sredni: '1.00',
-  przelicznik: '1.00'
+let walutaPL :Rate = {
+  code: 'PLN',
+  currency: "złoty polski",
+  mid: '1.00',
 };

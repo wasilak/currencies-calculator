@@ -16,6 +16,10 @@
     "url": "https://github.com/wasilak/currencies-calculator/issues"
   },
   "homepage": "https://github.com/wasilak/currencies-calculator#readme",
+  "dependencies": {
+    "angular": "~1.4.1",
+    "angular-sanitize": "~1.4.1"
+  },
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-jshint": "^2.0.1",

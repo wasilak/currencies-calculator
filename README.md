@@ -12,18 +12,3 @@ In order to make all of this nice for an eye and responsive for mobile devices I
 
 All dependencies are installed with **Bower** with `bower install`.
 
-### Example XML from bank
-I'm sure you dreamed to see it... ;)
-```xml
-<?xml version="1.0" encoding="ISO-8859-2"?>
-<tabela_kursow typ="A" uid="15a117">
-  <numer_tabeli>117/A/NBP/2015</numer_tabeli>
-  <data_publikacji>2015-06-19</data_publikacji>
-  <pozycja>
-    <nazwa_waluty>bat (Tajlandia)</nazwa_waluty>
-    <przelicznik>1</przelicznik>
-    <kod_waluty>THB</kod_waluty>
-    <kurs_sredni>0,1095</kurs_sredni>
-  </pozycja>
-</tabela_kursow>
-```
