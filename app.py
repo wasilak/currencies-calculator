@@ -5,9 +5,11 @@ from dateutil.relativedelta import relativedelta, FR
 import hashlib
 import requests
 from flask import Flask, render_template, jsonify, send_from_directory, session
+from flask_caching import Cache
 
 app = Flask(__name__)
 app.secret_key = str(time.time())
+cache = Cache(app, config={'CACHE_TYPE': 'filesystem', 'CACHE_DIR': './cache'})
 
 today_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -37,6 +39,7 @@ def index(path):
     return render_template('index.html', csrf_token=csrf_token, today_date=today_date, request_date=request_date)
 
 
+@cache.cached(timeout=50, key_prefix='rates')
 @app.route('/api/get/<csrf>/<force_download>/', defaults={'force_download': 0}, methods=['GET'])
 def api_get(csrf, force_download):
 
