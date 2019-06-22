@@ -18,15 +18,14 @@ var files = [
 
 var watchFiles = [
   './js/src/**/*.ts',
-  './index.php',
-  './proxy.php',
-  './css/style.css'
+  './app.py',
+  './static/css/style.css'
 ];
 
 gulp.task('default', function () {
   return gulp.src(files)
 		.pipe(tsProject())
-    .pipe(gulp.dest('./js/'))
+    .pipe(gulp.dest('./static/js/'))
     .pipe(livereload());
 });
 

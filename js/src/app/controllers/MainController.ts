@@ -109,20 +109,21 @@ module Application.Controllers {
             requestParams.forceDownload = 1;
           }
           
-          this.$http.get('proxy.php', {
-            params: requestParams,
-          }).success((data :RatesTable) => {
+          this.$http.get('/api/get/' + requestParams.currenciesCalulator_csrf + '/' + requestParams.forceDownload)
+          .success((data :RatesTable) => {
+            
+            let ratesTable :RatesTable = <RatesTable>data;
+            this.model.data = ratesTable;
 
-              let ratesTable :RatesTable = <RatesTable>data;
-              this.model.data = ratesTable;
-              this.model.effectiveDate = ratesTable.effectiveDate;
-
-              this.currencyTablePrepare();
-
-              if (localStorage) {
-                this.model.rate_from = localStorage.getItem('waluty_rate_from');
-                this.model.rate_to = localStorage.getItem('waluty_rate_to');
-              }
+            this.model.effectiveDate = ratesTable.effectiveDate;
+            console.log(this.model);
+            
+            this.currencyTablePrepare();
+            
+            if (localStorage) {
+              this.model.rate_from = localStorage.getItem('waluty_rate_from');
+              this.model.rate_to = localStorage.getItem('waluty_rate_to');
+            }
           }).error((data :Object) => {
             console.log(data);
           });

@@ -1,0 +1,9 @@
+version: "3.6"
+services:
+  app:
+    image: wasilak/currencies-calculator
+    ports:
+      - 5001:5000
+    environment:
+      CC_CSRF: ${CC_CSRF}
+    restart: unless-stopped
