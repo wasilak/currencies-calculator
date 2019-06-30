@@ -61,18 +61,20 @@ var Application;
                     if (_this.forceDownload) {
                         requestParams.forceDownload = 1;
                     }
-                    _this.$http.get('/api/get/' + requestParams.currenciesCalulator_csrf + '/' + requestParams.forceDownload)
-                        .success(function (data) {
-                        var ratesTable = data;
-                        _this.model.data = ratesTable;
-                        _this.model.effectiveDate = ratesTable.effectiveDate;
-                        console.log(_this.model);
-                        _this.currencyTablePrepare();
+                    var self = _this;
+                    _this.$http({
+                        method: 'GET',
+                        url: '/api/get/' + requestParams.currenciesCalulator_csrf + '/' + requestParams.forceDownload,
+                    }).then(function successCallback(response) {
+                        var ratesTable = response.data;
+                        self.model.data = ratesTable;
+                        self.model.effectiveDate = ratesTable.effectiveDate;
+                        self.currencyTablePrepare();
                         if (localStorage) {
-                            _this.model.rate_from = localStorage.getItem('waluty_rate_from');
-                            _this.model.rate_to = localStorage.getItem('waluty_rate_to');
+                            self.model.rate_from = localStorage.getItem('waluty_rate_from');
+                            self.model.rate_to = localStorage.getItem('waluty_rate_to');
                         }
-                    }).error(function (data) {
+                    }, function errorCallback(data) {
                         console.log(data);
                     });
                 };

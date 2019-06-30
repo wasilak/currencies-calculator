@@ -108,25 +108,47 @@ module Application.Controllers {
           if (this.forceDownload) {
             requestParams.forceDownload = 1;
           }
-          
-          this.$http.get('/api/get/' + requestParams.currenciesCalulator_csrf + '/' + requestParams.forceDownload)
-          .success((data :RatesTable) => {
-            
-            let ratesTable :RatesTable = <RatesTable>data;
-            this.model.data = ratesTable;
 
-            this.model.effectiveDate = ratesTable.effectiveDate;
-            console.log(this.model);
-            
-            this.currencyTablePrepare();
-            
-            if (localStorage) {
-              this.model.rate_from = localStorage.getItem('waluty_rate_from');
-              this.model.rate_to = localStorage.getItem('waluty_rate_to');
-            }
-          }).error((data :Object) => {
-            console.log(data);
+          let self = this
+
+          this.$http(
+            {
+              method: 'GET',
+              url: '/api/get/' + requestParams.currenciesCalulator_csrf + '/' + requestParams.forceDownload,
+            }).then(function successCallback(response) {
+              let ratesTable: RatesTable = response.data;
+              self.model.data = ratesTable;
+
+              self.model.effectiveDate = ratesTable.effectiveDate;
+
+              self.currencyTablePrepare();
+
+              if (localStorage) {
+                self.model.rate_from = localStorage.getItem('waluty_rate_from');
+                self.model.rate_to = localStorage.getItem('waluty_rate_to');
+              }
+            }, function errorCallback(data: Object) {
+                console.log(data);
           });
+          
+          // this.$http.get('/api/get/' + requestParams.currenciesCalulator_csrf + '/' + requestParams.forceDownload)
+          // .success((data :RatesTable) => {
+            
+          //   let ratesTable :RatesTable = <RatesTable>data;
+          //   this.model.data = ratesTable;
+
+          //   this.model.effectiveDate = ratesTable.effectiveDate;
+          //   console.log(this.model);
+            
+          //   this.currencyTablePrepare();
+            
+          //   if (localStorage) {
+          //     this.model.rate_from = localStorage.getItem('waluty_rate_from');
+          //     this.model.rate_to = localStorage.getItem('waluty_rate_to');
+          //   }
+          // }).error((data :Object) => {
+          //   console.log(data);
+          // });
         }
     }
 }
