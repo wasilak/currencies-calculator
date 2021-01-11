@@ -1,11 +1,10 @@
 {
   "name": "currencies-calculator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
-  "main": "index.php",
+  "main": "main.go",
   "scripts": {
-    "watch": "gulp watch",
-    "gulp": "gulp"
+    "gulp": "node_modules/.bin/gulp"
   },
   "repository": {
     "type": "git",
@@ -18,20 +17,10 @@
   },
   "homepage": "https://github.com/wasilak/currencies-calculator#readme",
   "dependencies": {
-    "angular": "~1.8.2",
-    "angular-sanitize": "~1.8.2",
     "typescript": "^4.x"
   },
   "devDependencies": {
-    "gulp": "^4.x",
-    "gulp-jshint": "^2.0.1",
-    "gulp-livereload": "^4.x",
-    "gulp-postcss": "^9.x",
-    "gulp-typescript": "6.0.0-alpha.1",
-    "jshint": "^2.9.2",
-    "jshint-stylish": "^2.2.0",
-    "postcss-reporter": "^7.x",
-    "stylelint": "^13.x",
-    "stylelint-config-standard": "^20.x"
+    "gulp": "^4.0.2",
+    "gulp-typescript": "6.0.0-alpha.1"
   }
 }
