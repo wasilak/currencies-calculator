@@ -116,6 +116,8 @@ func main() {
 		Root: rice.MustFindBox("static").HTTPBox(),
 	}))
 
+	app.Static("/static", "./static")
+
 	// Reload the templates on each render, good for development
 	if verbose == true {
 		engine.Reload(true) // Optional. Default: false
