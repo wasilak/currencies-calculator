@@ -55,7 +55,6 @@ var Application;
                 this.dataDownload = function () {
                     _this.resetTabelaWalut();
                     var requestParams = {
-                        currenciesCalulator_csrf: window.currenciesCalulator_csrf,
                         forceDownload: 0
                     };
                     if (_this.forceDownload) {
@@ -64,7 +63,7 @@ var Application;
                     var self = _this;
                     _this.$http({
                         method: 'GET',
-                        url: '/api/get/' + requestParams.currenciesCalulator_csrf + '/' + requestParams.forceDownload,
+                        url: '/api/get/' + requestParams.forceDownload,
                     }).then(function successCallback(response) {
                         var ratesTable = response.data;
                         self.model.data = ratesTable;
