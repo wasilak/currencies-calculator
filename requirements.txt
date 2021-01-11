@@ -1,5 +1,0 @@
-Flask
-python-dotenv
-requests
-python-dateutil
-flask-caching

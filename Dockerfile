@@ -1,28 +1,21 @@
-FROM python:3-alpine
+FROM  quay.io/wasilak/golang:1.15-alpine as builder
 
-ARG TIMEZONE=Europe/Warsaw
+WORKDIR /go/src/git.wasil.org/wasilak/currencies-calculator/
 
-COPY . /app
-
-ENV FLASK_ENV=production
-ENV FLASK_RUN_PORT=5000
-ENV FLASK_DEBUG=False
-ENV FLASK_APP=app.py
+COPY ./src .
 
 RUN apk add --update --no-cache yarn
 
-WORKDIR /app
-
 RUN yarn install
-
-RUN pip install -U pip
-RUN pip install -r requirements.txt
 
 RUN yarn run gulp
 
-RUN apk --update --no-cache add tzdata \
-    && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-    && echo "${TIMEZONE}" > /etc/timezone \
-    && apk del tzdata
+RUN go get github.com/GeertJohan/go.rice/rice
 
-CMD ["flask", "run", "--host=0.0.0.0" ,"--with-threads", "--eager-loading"]
+RUN rice embed-go && go build .
+
+FROM quay.io/wasilak/alpine:3
+
+COPY --from=builder /go/src/git.wasil.org/wasilak/currencies-calculator/currencies-calculator /currencies-calculator
+
+CMD ["/currencies-calculator", "--listen=0.0.0.0:3000"]
