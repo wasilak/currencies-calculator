@@ -10,5 +10,5 @@ var files = [
 gulp.task('default', function () {
   return gulp.src(files)
 		.pipe(tsProject())
-    .pipe(gulp.dest('./public/js/'));
+    .pipe(gulp.dest('./static/js/'));
 });
