@@ -225,3 +225,4 @@ src/static/js
 .env
 src/currencies-calculator
 src/rice-box.go
+src/pkged.go

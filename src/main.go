@@ -8,10 +8,11 @@ import (
 	"net/http"
 	"time"
 
-	rice "github.com/GeertJohan/go.rice"
+	// rice "github.com/GeertJohan/go.rice"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/template/html"
+	"github.com/markbates/pkger"
 	gocache "github.com/patrickmn/go-cache"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -106,14 +107,14 @@ func main() {
 	// purges expired items every 10 minutes
 	cache = gocache.New(5*time.Minute, 10*time.Minute)
 
-	engine := html.NewFileSystem(rice.MustFindBox("views").HTTPBox(), ".html")
+	engine := html.NewFileSystem(pkger.Dir("/views"), ".html")
 
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
 
 	app.Use("/static", filesystem.New(filesystem.Config{
-		Root: rice.MustFindBox("static").HTTPBox(),
+		Root: pkger.Dir("/static"),
 	}))
 
 	app.Static("/static", "./static")

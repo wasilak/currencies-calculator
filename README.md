@@ -13,4 +13,13 @@ In order to make all of this nice for an eye and responsive for mobile devices I
 All dependencies are installed with **Yarn** with `yarn install` and `go build`.
 
 Deployment:
- `rice embed go && go build`
+ `pkger && go build .`
+
+Building docker:
+```
+
+# if needed:
+# docker buildx create --use --append --name mybuilder unix:///var/run/docker.sock
+
+docker buildx build --tag quay.io/wasilak/currencies-calculator:latest --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 . --push --builder mybuilder
+```
