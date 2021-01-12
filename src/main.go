@@ -11,6 +11,7 @@ import (
 	// rice "github.com/GeertJohan/go.rice"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html"
 	"github.com/markbates/pkger"
 	gocache "github.com/patrickmn/go-cache"
@@ -125,6 +126,11 @@ func main() {
 		// Debug will print each template that is parsed, good for debugging
 		engine.Debug(true) // Optional. Default: false
 	}
+
+	appLogger := logger.New(logger.Config{
+		Format: `{"pid":${pid}, "timestamp":"${time}", "status":${status}, "latency":"${latency}", "method":"${method}", "path":"${path}"}` + "\n",
+	})
+	app.Use(appLogger)
 
 	app.Get("/", mainRoute)
 	app.Get("/api/get/:force", apiGetRoute)
