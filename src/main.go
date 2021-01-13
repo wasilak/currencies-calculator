@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html"
@@ -116,6 +117,8 @@ func main() {
 	app.Use("/static", filesystem.New(filesystem.Config{
 		Root: pkger.Dir("/static"),
 	}))
+
+	app.Use(compress.New())
 
 	app.Static("/static", "./static")
 
