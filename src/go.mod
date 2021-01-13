@@ -3,7 +3,6 @@ module git.wasil.org/wasilak/currencies-calculator
 go 1.15
 
 require (
-	github.com/GeertJohan/go.rice v1.0.2
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gofiber/fiber/v2 v2.2.1
 	github.com/gofiber/template v1.6.4

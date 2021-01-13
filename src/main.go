@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"time"
 
-	// rice "github.com/GeertJohan/go.rice"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
