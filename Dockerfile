@@ -1,26 +1,37 @@
-FROM  --platform=$BUILDPLATFORM quay.io/wasilak/golang:1.15-alpine as builder
+# ARG TARGETPLATFORM
+# ARG BUILDPLATFORM
+
+# FROM --platform=${BUILDPLATFORM} quay.io/wasilak/golang:1.16-alpine as builder
+
+# ARG GOOS
+# ARG GOARCH
+
+# RUN apk add --update --no-cache yarn
+
+# WORKDIR /src/currencies-calculator/
+
+# COPY ./src .
+
+# RUN yarn install
+
+# RUN yarn run gulp
+
+# RUN go build .
+
+# FROM --platform=${BUILDPLATFORM} quay.io/wasilak/alpine:3
+
+# COPY --from=builder /src/currencies-calculator/currencies-calculator /currencies-calculator
+
+# CMD ["/currencies-calculator", "--listen=0.0.0.0:3000"]
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
-RUN apk add --update --no-cache yarn git
+FROM --platform=${BUILDPLATFORM} quay.io/wasilak/alpine:3
 
-WORKDIR /go/src/git.wasil.org/wasilak/currencies-calculator/
+ARG GOOS
+ARG GOARCH
 
-RUN go get github.com/markbates/pkger/cmd/pkger
-
-COPY --from=tonistiigi/xx:golang / /
-
-COPY ./src .
-
-RUN yarn install
-
-RUN yarn run gulp
-
-RUN pkger && go build .
-
-FROM --platform=$BUILDPLATFORM quay.io/wasilak/alpine:3
-
-COPY --from=builder /go/src/git.wasil.org/wasilak/currencies-calculator/currencies-calculator /currencies-calculator
+ADD ./dist/currencies-calculator-$GOOS-$GOARCH /currencies-calculator
 
 CMD ["/currencies-calculator", "--listen=0.0.0.0:3000"]

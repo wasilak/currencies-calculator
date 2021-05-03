@@ -13,7 +13,7 @@ In order to make all of this nice for an eye and responsive for mobile devices I
 All dependencies are installed with **Yarn** with `yarn install` and `go build`.
 
 Deployment:
- `pkger && go build .`
+ `go build .`
 
 Building docker:
 ```

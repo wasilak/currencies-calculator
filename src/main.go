@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"encoding/json"
 	"flag"
 	"io/ioutil"
@@ -13,11 +14,16 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html"
-	"github.com/markbates/pkger"
 	gocache "github.com/patrickmn/go-cache"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
+
+//go:embed views
+var views embed.FS
+
+//go:embed static/*
+var static embed.FS
 
 var verbose bool
 var cache *gocache.Cache
@@ -37,7 +43,7 @@ type RateResponse struct {
 type RatesResponse []RateResponse
 
 func mainRoute(c *fiber.Ctx) error {
-	return c.Render("index", fiber.Map{})
+	return c.Render("views/index", fiber.Map{})
 }
 
 func apiGetRoute(c *fiber.Ctx) error {
@@ -108,19 +114,17 @@ func main() {
 	// purges expired items every 10 minutes
 	cache = gocache.New(5*time.Minute, 10*time.Minute)
 
-	engine := html.NewFileSystem(pkger.Dir("/views"), ".html")
+	engine := html.NewFileSystem(http.FS(views), ".html")
 
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
 
-	app.Use("/static", filesystem.New(filesystem.Config{
-		Root: pkger.Dir("/static"),
+	app.Use("/public", filesystem.New(filesystem.Config{
+		Root: http.FS(static),
 	}))
 
 	app.Use(compress.New())
-
-	app.Static("/static", "./static")
 
 	// Reload the templates on each render, good for development
 	if verbose == true {
