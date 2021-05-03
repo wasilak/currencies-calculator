@@ -165,7 +165,7 @@ steps:
       base_url: http://git.service.consul
       files:
         - /drone/src/currencies-calculator-*
-      title: 0.0.3
+      title: 1.0.5
       # note: CHANGELOG_LAST.md # git changelog -s 0.0.13 -f 0.0.13 -l -p CHANGELOG_LAST.md
       # note: CHANGELOG.md # git changelog -a -p CHANGELOG.md
       checksum:
