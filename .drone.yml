@@ -89,7 +89,10 @@ steps:
     image: quay.io/wasilak/golang:1.16-alpine
     pull: if-not-exists
     commands:
+      - apk add --update --no-cache yarn
       - cd src
+      - yarn install
+      - yarn run gulp
       - go build -o ../dist/currencies-calculator-$${GOOS}-$${GOARCH}
 
   - name: upload executable

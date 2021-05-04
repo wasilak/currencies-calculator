@@ -124,8 +124,6 @@ func main() {
 		Root: http.FS(static),
 	}))
 
-	app.Static("/public", "./static")
-
 	app.Use(compress.New())
 
 	// Reload the templates on each render, good for development
