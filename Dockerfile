@@ -1,11 +1,12 @@
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
+FROM quay.io/wasilak/golang:1.17-alpine as builder
 
-FROM --platform=${BUILDPLATFORM} quay.io/wasilak/alpine:3
+ADD . /app
+WORKDIR /app/src
+RUN mkdir -p ../dist
+RUN go build -o ../dist/currencies-calculator
 
-ARG GOOS
-ARG GOARCH
+FROM quay.io/wasilak/alpine:3
 
-ADD ./dist/currencies-calculator-$GOOS-$GOARCH /currencies-calculator
+COPY --from=builder /app/dist/currencies-calculator /currencies-calculator
 
 CMD ["/currencies-calculator", "--listen=0.0.0.0:3000"]
