@@ -4,16 +4,17 @@ import (
 	"embed"
 	"encoding/json"
 	"flag"
+	"html/template"
+	"io"
+	"io/fs"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/compress"
-	"github.com/gofiber/fiber/v2/middleware/filesystem"
-	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/gofiber/template/html"
+	"github.com/labstack/echo-contrib/prometheus"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/gommon/log"
 	gocache "github.com/patrickmn/go-cache"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -42,26 +43,52 @@ type RateResponse struct {
 
 type RatesResponse []RateResponse
 
-func mainRoute(c *fiber.Ctx) error {
-	return c.Render("views/index", fiber.Map{})
+func getEmbededViews() fs.FS {
+	fsys, err := fs.Sub(views, "views")
+	if err != nil {
+		panic(err)
+	}
+
+	return fsys
 }
 
-func apiGetRoute(c *fiber.Ctx) error {
-	force := c.Params("force")
+func getEmbededAssets() http.FileSystem {
+	fsys, err := fs.Sub(static, "static")
+	if err != nil {
+		panic(err)
+	}
+
+	return http.FS(fsys)
+}
+
+type Template struct {
+	templates *template.Template
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
+
+func mainRoute(c echo.Context) error {
+	var tempalateData interface{}
+	// return c.Render("views/index", tempalateData)
+	return c.Render(http.StatusOK, "index", tempalateData)
+}
+
+func apiGetRoute(c echo.Context) error {
+	force := c.Param("force")
 
 	var ratesResponse RatesResponse
 	if x, found := cache.Get("ratesResponse"); found && force == "0" {
-		if verbose {
-			log.Println("Cache hit!")
-		}
+
+		log.Debug("Cache hit!")
+
 		ratesResponse = x.(RatesResponse)
 	} else {
-		if verbose {
-			if force == "1" {
-				log.Println("Cache refresh forced!")
-			} else {
-				log.Println("Cache miss!")
-			}
+		if force == "1" {
+			log.Debug("Cache refresh forced!")
+		} else {
+			log.Debug("Cache miss!")
 		}
 		res, err := http.Get("https://api.nbp.pl/api/exchangerates/tables/A/?format=json")
 		if err != nil {
@@ -76,20 +103,16 @@ func apiGetRoute(c *fiber.Ctx) error {
 		ratesResponse = RatesResponse{}
 		err = json.Unmarshal(response, &ratesResponse)
 		if err != nil {
-			log.Println(err)
+			log.Debug(err)
 		}
 
 		cache.Set("ratesResponse", ratesResponse, gocache.DefaultExpiration)
 	}
 
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
+	log.Debug(force)
+	log.Debug(ratesResponse)
 
-	if verbose {
-		log.Println(force)
-		log.Println(ratesResponse)
-	}
-
-	return json.NewEncoder(c.Response().BodyWriter()).Encode(ratesResponse[0])
+	return c.JSON(http.StatusOK, ratesResponse[0])
 }
 
 func main() {
@@ -107,39 +130,43 @@ func main() {
 	verbose = viper.GetBool("verbose")
 
 	if verbose == true {
-		log.Println(viper.AllSettings())
+		log.Debug(viper.AllSettings())
+		log.SetLevel(log.DEBUG)
 	}
 
 	// Create a cache with a default expiration time of 5 minutes, and which
 	// purges expired items every 10 minutes
 	cache = gocache.New(5*time.Minute, 10*time.Minute)
 
-	engine := html.NewFileSystem(http.FS(views), ".html")
+	e := echo.New()
 
-	app := fiber.New(fiber.Config{
-		Views: engine,
-	})
+	e.Use(middleware.Gzip())
 
-	app.Use("/public", filesystem.New(filesystem.Config{
-		Root: http.FS(static),
-	}))
+	e.HideBanner = true
 
-	app.Use(compress.New())
-
-	// Reload the templates on each render, good for development
-	if verbose == true {
-		engine.Reload(true) // Optional. Default: false
-		// Debug will print each template that is parsed, good for debugging
-		engine.Debug(true) // Optional. Default: false
+	if viper.GetBool("verbose") {
+		e.Logger.SetLevel(log.DEBUG)
 	}
 
-	appLogger := logger.New(logger.Config{
-		Format: `{"pid":${pid}, "timestamp":"${time}", "status":${status}, "latency":"${latency}", "method":"${method}", "path":"${path}"}` + "\n",
-	})
-	app.Use(appLogger)
+	e.Debug = viper.GetBool("debug")
 
-	app.Get("/", mainRoute)
-	app.Get("/api/get/:force", apiGetRoute)
+	t := &Template{
+		templates: template.Must(template.ParseFS(getEmbededViews(), "*.html")),
+	}
 
-	app.Listen(viper.GetString("listen"))
+	e.Renderer = t
+
+	e.Use(middleware.Logger())
+
+	// Enable metrics middleware
+	p := prometheus.NewPrometheus("echo", nil)
+	p.Use(e)
+
+	assetHandler := http.FileServer(getEmbededAssets())
+	e.GET("/public/static/*", echo.WrapHandler(http.StripPrefix("/public/static/", assetHandler)))
+
+	e.GET("/", mainRoute)
+	e.GET("/api/get/:force", apiGetRoute)
+
+	e.Logger.Fatal(e.Start(viper.GetString("listen")))
 }
