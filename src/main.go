@@ -7,7 +7,6 @@ import (
 	"html/template"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -100,7 +99,7 @@ func apiGetRoute(c echo.Context) error {
 			log.Fatal(err)
 		}
 
-		response, err := ioutil.ReadAll(res.Body)
+		response, err := io.ReadAll(res.Body)
 		if err != nil {
 			log.Fatal(err)
 		}
