@@ -90,7 +90,12 @@ func apiGetRoute(c echo.Context) error {
 		} else {
 			log.Debug("Cache miss!")
 		}
-		res, err := http.Get("https://api.nbp.pl/api/exchangerates/tables/A/?format=json")
+
+		client := &http.Client{}
+		req, err := http.NewRequest("GET", "https://api.nbp.pl/api/exchangerates/tables/A/?format=json", nil)
+		req.Header.Set("user-agent", "curl/7.87.0")
+		res, _ := client.Do(req)
+
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -99,6 +104,7 @@ func apiGetRoute(c echo.Context) error {
 		if err != nil {
 			log.Fatal(err)
 		}
+		log.Debug(string(response))
 
 		ratesResponse = RatesResponse{}
 		err = json.Unmarshal(response, &ratesResponse)
@@ -129,7 +135,7 @@ func main() {
 
 	verbose = viper.GetBool("verbose")
 
-	if verbose == true {
+	if verbose {
 		log.Debug(viper.AllSettings())
 		log.SetLevel(log.DEBUG)
 	}
