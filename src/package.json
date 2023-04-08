@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/wasilak/currencies-calculator#readme",
   "dependencies": {
-    "typescript": "^4.5.3"
+    "typescript": ">=5.0.4"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
