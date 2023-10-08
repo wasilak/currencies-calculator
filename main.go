@@ -7,8 +7,6 @@ import (
 	"io"
 	"io/fs"
 	"net/http"
-	"os"
-	"runtime/debug"
 	"strings"
 	"time"
 
@@ -21,13 +19,12 @@ import (
 	"github.com/wasilak/currencies-calculator/libs"
 )
 
-//go:embed views
+//go:embed dist/*
+var dist embed.FS
+
+//go:embed views/*
 var views embed.FS
 
-//go:embed static/*
-var static embed.FS
-
-var version string
 var cache *gocache.Cache
 
 func getEmbededViews() fs.FS {
@@ -40,7 +37,7 @@ func getEmbededViews() fs.FS {
 }
 
 func getEmbededAssets() http.FileSystem {
-	fsys, err := fs.Sub(static, "static")
+	fsys, err := fs.Sub(dist, "dist")
 	if err != nil {
 		panic(err)
 	}
@@ -72,36 +69,21 @@ func apiGetRoute(c echo.Context) error {
 }
 
 func main() {
-	buildInfo, _ := debug.ReadBuildInfo()
-
-	// using standard library "flag" package
-	flag.Bool("version", false, "version")
 	flag.Bool("verbose", false, "verbose")
-	flag.Bool("show-settings", false, "show settings and exit")
-	flag.Int("cache-expire", 10*3600, "cache expire interval in seconds")
-	flag.Int("metrics-refresh", 3600, "metrics rfresh interval in seconds")
 	flag.String("listen", "localhost:3000", "listen address")
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
 	viper.BindPFlags(pflag.CommandLine)
 
-	viper.SetEnvPrefix("CC")
+	viper.SetEnvPrefix("RHW")
 	viper.AutomaticEnv()
-
-	if viper.GetBool("show-settings") {
-		log.Info(viper.AllSettings())
-		os.Exit(0)
-	}
 
 	if viper.GetBool("debug") {
 		log.SetLevel(log.DEBUG)
 	}
 
-	if viper.GetBool("version") {
-		log.Infof("currencies-calculator %s (%s)", version, buildInfo.GoVersion)
-		os.Exit(0)
-	}
+	log.Debug(viper.AllSettings())
 
 	// Create a cache with a default expiration time of 5 minutes, and which
 	// purges expired items every N seconds
@@ -132,9 +114,10 @@ func main() {
 	e.Use(middleware.Logger())
 
 	assetHandler := http.FileServer(getEmbededAssets())
-	e.GET("/public/static/*", echo.WrapHandler(http.StripPrefix("/public/static/", assetHandler)))
+	e.GET("/public/dist/*", echo.WrapHandler(http.StripPrefix("/public/dist/", assetHandler)))
 
 	e.GET("/", mainRoute)
+	e.GET("/api/get/", apiGetRoute)
 	e.GET("/api/get/:force", apiGetRoute)
 
 	// run in background

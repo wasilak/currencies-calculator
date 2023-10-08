@@ -27,31 +27,26 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Setup Go environment
-        uses: actions/setup-go@v3
+      - name: Setup Go environment ${{ matrix.os }} ${{ matrix.arch }}
+        uses: actions/setup-go@v4
         with:
-          # The Go version to download (if necessary) and use. Supports semver spec and ranges.
-          go-version: 1.20.1
-          # Whether to download only stable versions
-          # stable: # optional, default is true
-          # Used to pull node distributions from go-versions.  Since there's a default, this is typically not supplied by the user.
-          # token: # optional, default is ${{ github.token }}
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
 
-      - uses: borales/actions-yarn@v4.2.0
+      - uses: borales/actions-yarn@v4
         with:
-          cmd: --cwd src install # will run `yarn install` command
-      - uses: borales/actions-yarn@v4.2.0
+          cmd: install # will run `yarn install` command
+
+      - uses: borales/actions-yarn@v4
         with:
-          cmd: --cwd src run gulp
+          cmd: build
 
       - name: Build executable
         run: |
-          cd src/
-          mkdir -p ../dist
-          go build -o ../dist/currencies-calculator
+          mkdir -p ./dist
+          go build -o ./dist/currencies-calculator
         env:
           GOOS: ${{ matrix.os }}
           GOARCH: ${{ matrix.arch }}
@@ -72,13 +67,15 @@ jobs:
             dist/currencies-calculator*.zip
 
   docker:
+    if: ${{ github.actor != 'dependabot[bot]' }}
+
     runs-on: ubuntu-latest
     needs: build
 
     steps:
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           # list of Docker images to use as base name for tags
           images: |
@@ -94,13 +91,13 @@ jobs:
             type=semver,pattern={{major}}
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to Quay.io
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: quay.io
           username: ${{ secrets.QUAY_IO_LOGIN }}
@@ -108,8 +105,10 @@ jobs:
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
+          build-args: |
+            VERSION=${{ github.ref_name }}
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}

@@ -20,12 +20,14 @@ func PrometheusSetup(e *echo.Echo, cache *gocache.Cache) {
 func generateMetrics(rateMetric *prometheus.GaugeVec, cache *gocache.Cache) {
 	ratesResponse := GetCurrencies(cache, "1")
 
-	for _, rate := range ratesResponse[0].Rates {
-		rateMetric.With(prometheus.Labels{
-			"currency": rate.Currency,
-			"code":     rate.Code,
-		}).Set(float64(rate.Mid))
+	if len(ratesResponse) > 0 {
+		for _, rate := range ratesResponse[0].Rates {
+			rateMetric.With(prometheus.Labels{
+				"currency": rate.Currency,
+				"code":     rate.Code,
+			}).Set(float64(rate.Mid))
 
+		}
 	}
 }
 
