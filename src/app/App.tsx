@@ -7,7 +7,7 @@ const App = () => {
     const [currencies, setCurrencies] = useState<Model>(undefined);
 
     const GetCurrencies = () => {
-        fetch('/api/get/')
+        fetch('/api/get/0')
             .then((res) => res.json())
             .then((data) => {
                 let ratesTable: RatesTable = data;

@@ -76,12 +76,14 @@ func main() {
 	pflag.Parse()
 	viper.BindPFlags(pflag.CommandLine)
 
-	viper.SetEnvPrefix("RHW")
+	viper.SetEnvPrefix("CC")
 	viper.AutomaticEnv()
 
 	if viper.GetBool("debug") {
 		log.SetLevel(log.DEBUG)
 	}
+
+	viper.SetDefault("metrics-refresh", 3600)
 
 	log.Debug(viper.AllSettings())
 
