@@ -2,7 +2,7 @@ const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 module.exports = {
-    mode: 'development',
+    mode: process.env.NODE_ENV,
     entry: './src/app/index.tsx',
     module: {
         rules: [

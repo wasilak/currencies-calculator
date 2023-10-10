@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { CurrenciesSelect } from "./lib/CurrenciesSelect"
 import { CurrenciesHeader } from "./lib/CurrenciesHeader"
-import { Model, RatesTable, WalutaPL, Rate } from "./lib/models"
+import { Model, WalutaPL, Rate } from "./lib/models"
+import { GetCurrencies } from "./lib/api"
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 import i18next from "i18next";
@@ -23,26 +24,6 @@ const App = () => {
     const [currencies, setCurrencies] = useState<Model>(undefined);
 
     const { t } = useTranslation();
-
-    const GetCurrencies = () => {
-        fetch('/api/get/0')
-            .then((res) => res.json())
-            .then((data) => {
-                let ratesTable: RatesTable = data;
-                let model: Model = {
-                    data: ratesTable,
-                }
-                model.data.rates = [WalutaPL, ...model.data.rates];
-                setCurrencies(model);
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    };
-
-    useEffect(() => {
-        GetCurrencies();
-    }, []);
 
     const midRateCalculate = (selected: string): string => {
         if (currencies) {
@@ -80,6 +61,10 @@ const App = () => {
     const handleAmountFrom = (event: any) => {
         setAmountFrom(event.target.valueAsNumber);
     };
+
+    useEffect(() => {
+        GetCurrencies(setCurrencies);
+    }, []);
 
     useEffect(() => {
         setAmountTo(doCalculation());

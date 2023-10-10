@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from './lib/reportWebVitals';
 
 import { I18nextProvider } from "react-i18next";
 import i18next from "i18next";

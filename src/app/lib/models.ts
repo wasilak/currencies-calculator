@@ -11,12 +11,6 @@ export interface RatesTable {
 
 export interface Model {
     data: RatesTable,
-    // rates: Object,
-    // rate_from: string,
-    // rate_to: string,
-    // amount_from: string,
-    // amount_to: string,
-    // effectiveDate: string
 }
 
 export const WalutaPL: Rate = {
