@@ -1,5 +1,6 @@
-import { FunctionComponent, useState } from 'react';
+// import { FunctionComponent, useState } from 'react';
 import { Model, Rate, WalutaPL } from "./models"
+import { useTranslation } from "react-i18next";
 
 // type CurrenciesSelectProps = {
 //     currencies: Model,
@@ -8,6 +9,8 @@ import { Model, Rate, WalutaPL } from "./models"
 
 // export const CurrenciesSelect: FunctionComponent<CurrenciesSelectProps> = ({ currencies, selected, handleChange }) => {
 export const CurrenciesSelect = ({ currencies, selected, onChange, midRate }: any) => {
+    const { t } = useTranslation();
+
     return (
         <div>
             <select value={selected} onChange={onChange} >
@@ -19,7 +22,7 @@ export const CurrenciesSelect = ({ currencies, selected, onChange, midRate }: an
                     })
                 }
             </select>
-            <p>Mid rate: <span className="label">{midRate} PLN</span></p>
+            <p>{t("mid_rate")}: <span className="label">{midRate} PLN</span></p>
         </div>
     );
 }

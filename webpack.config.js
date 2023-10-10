@@ -1,3 +1,4 @@
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 module.exports = {
@@ -24,10 +25,14 @@ module.exports = {
         open: true,
         hot: true
     },
-    plugins: [new HtmlWebpackPlugin({
-        template: "./src/templates/index.html",
-        hash: true, // Cache busting
-        filename: '../views/index.html',
-        publicPath: '/public/dist/'
-    })]
+    plugins:
+        [
+            new HtmlWebpackPlugin({
+                template: "./src/templates/index.html",
+                hash: true, // Cache busting
+                filename: '../views/index.html',
+                publicPath: '/public/dist/'
+            }),
+            new Dotenv()
+        ]
 };
