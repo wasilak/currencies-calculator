@@ -1,19 +1,21 @@
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import Grid from '@mui/material/Grid';
+import Chip from '@mui/material/Chip';
 
 export const CurrenciesHeader = ({ currencies }: any) => {
     const { t } = useTranslation();
 
     return (
-        <div className="row">
+        <Grid container justifyContent="space-between">
             {currencies &&
-                <div className="small-8 columns">
-                    <span className="label left">{t("effective_date")}: {currencies.data.effectiveDate}</span>
-                </div>
+                <Grid item>
+                    <Chip label={`${t("effective_date")}: ${currencies.data.effectiveDate}`} color="success" variant="outlined" />
+                </Grid>
             }
-            <div className="small-4 columns">
+            <Grid item>
                 <LanguageSwitcher />
-            </div>
-        </div>
+            </Grid>
+        </Grid>
     );
 }

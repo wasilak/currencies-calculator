@@ -10,6 +10,14 @@ import { useTranslation } from "react-i18next";
 import { initReactI18next } from "react-i18next";
 import Translations from "./lib/locales";
 
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+
+const defaultTheme = createTheme();
+
 const resources = Translations()
 
 i18next.use(LanguageDetector).use(initReactI18next).init({
@@ -59,7 +67,11 @@ const App = () => {
     };
 
     const handleAmountFrom = (event: any) => {
-        setAmountFrom(event.target.valueAsNumber);
+        if (event.target.value) {
+            setAmountFrom(event.target.value);
+        } else {
+            setAmountFrom(0);
+        }
     };
 
     useEffect(() => {
@@ -71,31 +83,33 @@ const App = () => {
     }, [midRateTo, midRateFrom, amountFrom])
 
     return (
-        <div className="row">
-            <div className="small-12 medium-8 large-6 small-centered columns">
-                <CurrenciesHeader currencies={currencies}></CurrenciesHeader>
-                <div className="row">
-                    <div className="small-12 columns">
-                        <h3>{t("from")}:</h3>
-                        <CurrenciesSelect currencies={currencies} selected={selectedFrom} onChange={handleChangeFrom} midRate={midRateFrom}></CurrenciesSelect>
+        <ThemeProvider theme={defaultTheme}>
+            <Container component="main" maxWidth="sm" sx={{ mt: 2 }}>
+                <CssBaseline />
+                <Box>
+                    <Box sx={{ mb: 3 }}>
+                        <CurrenciesHeader currencies={currencies}></CurrenciesHeader>
+                    </Box>
 
-                        <h3>{t("to")}:</h3>
-                        <CurrenciesSelect currencies={currencies} selected={selectedTo} onChange={handleChangeTo} midRate={midRateTo}></CurrenciesSelect>
+                    <Box sx={{ mb: 3 }}>
+                        <CurrenciesSelect currencies={currencies} selected={selectedFrom} onChange={handleChangeFrom} midRate={midRateFrom} label={t("from")}></CurrenciesSelect>
+                    </Box>
 
-                        <div>
-                            <h3>{t("amount")}:</h3>
-                            <input type="number" name="" defaultValue={amountFrom} placeholder="Amount to calculate..." onChange={handleAmountFrom}></input>
+                    <Box sx={{ mb: 3 }}>
+                        <CurrenciesSelect currencies={currencies} selected={selectedTo} onChange={handleChangeTo} midRate={midRateTo} label={t("to")}></CurrenciesSelect>
+                    </Box>
 
-                            <h5 className="subheader">{t("value_in_selected_currency")}:</h5>
-                            <div className="panel callout">
-                                <p>{amountFrom} {selectedFrom} = {amountTo} {selectedTo}</p>
-                            </div>
-                        </div>
+                    <Box sx={{ mb: 3 }}>
+                        <TextField fullWidth label={t("amount")} variant="outlined" value={amountFrom} onChange={handleAmountFrom} />
+                    </Box>
 
-                    </div>
-                </div>
-            </div>
-        </div >
+                    <Box>
+                        <TextField fullWidth disabled label={t("value_in_selected_currency")} variant="outlined" value={`${amountFrom} ${selectedFrom} = ${amountTo} ${selectedTo}`} />
+                    </Box>
+                </Box>
+            </Container>
+        </ThemeProvider>
+
     );
 }
 

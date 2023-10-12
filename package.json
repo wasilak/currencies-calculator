@@ -3,6 +3,9 @@
   "version": "v1.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.13",
     "@types/react": "^18.2.25",
     "@types/react-dom": "^18.2.10",
     "axios": "^1.5.1",
@@ -18,8 +21,8 @@
     "typescript": "^5.2.2",
     "web-vitals": "^3.5.0",
     "webpack": "^5.88.2",
-    "webpack-dev-server": "^4.15.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   },
   "scripts": {
     "build": "webpack",
@@ -43,6 +46,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {}
+  }
 }
