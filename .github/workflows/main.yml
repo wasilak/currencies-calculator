@@ -29,6 +29,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install and run Spectral CI
+        uses: spectralops/spectral-github-action@v4
+        with:
+          spectral-dsn: ${{ secrets.SPECTRAL_DSN }}
+          spectral-args: scan --ok
+
       - name: Setup Go environment ${{ matrix.os }} ${{ matrix.arch }}
         uses: actions/setup-go@v4
         with:
