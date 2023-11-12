@@ -1,6 +1,6 @@
 FROM quay.io/wasilak/golang:1.21-alpine as builder
 
-ADD . /app
+COPY . /app
 WORKDIR /app
 RUN apk add --update --no-cache yarn
 
