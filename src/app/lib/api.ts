@@ -4,8 +4,8 @@ import { Model, RatesTable, WalutaPL } from "./models"
 export const GetCurrencies = (setCurrencies: any) => {
     axios.get('/api/get/0')
         .then(response => {
-            let ratesTable: RatesTable = response.data;
-            let model: Model = {
+            const ratesTable: RatesTable = response.data;
+            const model: Model = {
                 data: ratesTable,
             }
             model.data.rates = [WalutaPL, ...model.data.rates];
@@ -13,6 +13,6 @@ export const GetCurrencies = (setCurrencies: any) => {
             setCurrencies(model);
         })
         .catch(error => {
-            console.log(console.error);
+            console.log(error);
         });
 };

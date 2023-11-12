@@ -1,5 +1,5 @@
 // import { FunctionComponent, useState } from 'react';
-import { Model, Rate } from "./models"
+import { Rate } from "./models"
 import { useTranslation } from "react-i18next";
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
@@ -8,12 +8,6 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Chip from '@mui/material/Chip';
 
-// type CurrenciesSelectProps = {
-//     currencies: Model,
-// }
-
-
-// export const CurrenciesSelect: FunctionComponent<CurrenciesSelectProps> = ({ currencies, selected, handleChange }) => {
 export const CurrenciesSelect = ({ currencies, selected, onChange, midRate, label }: any) => {
     const { t } = useTranslation();
 
