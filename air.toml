@@ -29,7 +29,7 @@ exclude_dir = [
 # Watch these directories if you specified.
 include_dir = []
 # Exclude files.
-exclude_file = []
+exclude_file = ["views/index.html"]
 # Exclude unchanged files.
 exclude_unchanged = true
 # This log file places in your tmp_dir.
