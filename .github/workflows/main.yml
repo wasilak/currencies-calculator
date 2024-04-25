@@ -36,16 +36,16 @@ jobs:
           spectral-args: scan --ok
 
       - name: Setup Go environment ${{ matrix.os }} ${{ matrix.arch }}
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
-      - uses: borales/actions-yarn@v4
+      - uses: borales/actions-yarn@v5
         with:
           cmd: install # will run `yarn install` command
 
-      - uses: borales/actions-yarn@v4
+      - uses: borales/actions-yarn@v5
         with:
           cmd: build
 
