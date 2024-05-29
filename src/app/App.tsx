@@ -44,9 +44,13 @@ const App = () => {
         return '1.0';
     };
 
-    const [selectedFrom, setSelectedFrom] = useState(WalutaPL.code);
+    const getCurrencyFromLocalStorage = (requestType: string): string => {
+        return localStorage.getItem(requestType);
+    };
+
+    const [selectedFrom, setSelectedFrom] = useState("");
     const [midRateFrom, setMidRateFrom] = useState(midRateCalculate(WalutaPL.code));
-    const [selectedTo, setSelectedTo] = useState(WalutaPL.code);
+    const [selectedTo, setSelectedTo] = useState("");
     const [midRateTo, setMidRateTo] = useState(midRateCalculate(WalutaPL.code));
     const [amountFrom, setAmountFrom] = useState(1);
     const [amountTo, setAmountTo] = useState(1);
@@ -58,11 +62,13 @@ const App = () => {
 
     const handleChangeFrom = (selectedOption: any) => {
         setSelectedFrom(selectedOption.target.value);
+        localStorage.setItem("from", selectedOption.target.value);
         setMidRateFrom(midRateCalculate(selectedOption.target.value));
     };
 
     const handleChangeTo = (selectedOption: any) => {
         setSelectedTo(selectedOption.target.value);
+        localStorage.setItem("to", selectedOption.target.value);
         setMidRateTo(midRateCalculate(selectedOption.target.value));
     };
 
@@ -77,6 +83,13 @@ const App = () => {
     useEffect(() => {
         GetCurrencies(setCurrencies);
     }, []);
+
+    useEffect(() => {
+        setSelectedFrom(getCurrencyFromLocalStorage("from"));
+        setSelectedTo(getCurrencyFromLocalStorage("to"));
+        setMidRateFrom(midRateCalculate(getCurrencyFromLocalStorage("from")));
+        setMidRateTo(midRateCalculate(getCurrencyFromLocalStorage("to")));
+    }, [currencies]);
 
     useEffect(() => {
         setAmountTo(doCalculation());
