@@ -20,6 +20,8 @@ const defaultTheme = createTheme();
 
 const resources = Translations()
 
+const defaultCurrency = WalutaPL.code;
+
 i18next.use(LanguageDetector).use(initReactI18next).init({
     resources,
     fallbackLng: "en",
@@ -35,7 +37,6 @@ const App = () => {
 
     const midRateCalculate = (selected: string): string => {
         if (currencies) {
-
             return currencies.data.rates.filter((value: Rate) => {
                 return value.code == selected;
             })[0].mid;
@@ -45,13 +46,18 @@ const App = () => {
     };
 
     const getCurrencyFromLocalStorage = (requestType: string): string => {
-        return localStorage.getItem(requestType);
+        const item = localStorage.getItem(requestType);
+        if (item && item.length > 0) {
+            return item;
+        }
+
+        return defaultCurrency;
     };
 
-    const [selectedFrom, setSelectedFrom] = useState("");
-    const [midRateFrom, setMidRateFrom] = useState(midRateCalculate(WalutaPL.code));
-    const [selectedTo, setSelectedTo] = useState("");
-    const [midRateTo, setMidRateTo] = useState(midRateCalculate(WalutaPL.code));
+    const [selectedFrom, setSelectedFrom] = useState(defaultCurrency);
+    const [midRateFrom, setMidRateFrom] = useState(midRateCalculate(defaultCurrency));
+    const [selectedTo, setSelectedTo] = useState(defaultCurrency);
+    const [midRateTo, setMidRateTo] = useState(midRateCalculate(defaultCurrency));
     const [amountFrom, setAmountFrom] = useState(1);
     const [amountTo, setAmountTo] = useState(1);
 
