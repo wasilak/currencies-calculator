@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"flag"
 	"html/template"
 	"io"
 	"io/fs"
+	"log/slog"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -14,9 +17,13 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	gocache "github.com/patrickmn/go-cache"
+	slogecho "github.com/samber/slog-echo"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"github.com/wasilak/currencies-calculator/libs"
+	"github.com/wasilak/loggergo"
+	otelgotracer "github.com/wasilak/otelgo/tracing"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 )
 
 //go:embed dist/*
@@ -63,13 +70,15 @@ func apiGetRoute(c echo.Context) error {
 
 	ratesResponse := libs.GetCurrencies(cache, force)
 
-	log.Debug(ratesResponse)
+	slog.Debug("ratesResponse", "value", ratesResponse)
 
 	return c.JSON(http.StatusOK, ratesResponse[0])
 }
 
 func main() {
-	flag.Bool("verbose", false, "verbose")
+
+	ctx := context.Background()
+
 	flag.String("listen", "localhost:3000", "listen address")
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
@@ -77,21 +86,53 @@ func main() {
 	viper.BindPFlags(pflag.CommandLine)
 
 	viper.SetEnvPrefix("CC")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
 	viper.AutomaticEnv()
 
-	if viper.GetBool("debug") {
-		log.SetLevel(log.DEBUG)
+	viper.SetDefault("metrics-refresh", 3600)
+	viper.SetDefault("log.level", "info")
+	viper.SetDefault("log.format", "json")
+	viper.SetDefault("otel.enabled", false)
+
+	if strings.EqualFold(viper.GetString("log.level"), "debug") {
+		slog.InfoContext(ctx, "settings", "value", viper.AllSettings())
 	}
 
-	viper.SetDefault("metrics-refresh", 3600)
+	if viper.GetBool("otel.enabled") {
+		otelGoTracingConfig := otelgotracer.OtelGoTracingConfig{
+			HostMetricsEnabled:    true,
+			RuntimeMetricsEnabled: true,
+		}
+		ctx, _, err := otelgotracer.Init(ctx, otelGoTracingConfig)
+		if err != nil {
+			slog.ErrorContext(ctx, "error", "value", err.Error())
+			os.Exit(1)
+		}
+	}
 
-	log.Debug(viper.AllSettings())
+	loggerConfig := loggergo.LoggerGoConfig{
+		Level:  viper.GetString("log.level"),
+		Format: viper.GetString("log.format"),
+	}
+
+	_, err := loggergo.LoggerInit(loggerConfig)
+	if err != nil {
+		slog.ErrorContext(ctx, "error", "value", err.Error())
+		os.Exit(1)
+	}
 
 	// Create a cache with a default expiration time of 5 minutes, and which
 	// purges expired items every N seconds
 	cache = gocache.New(5*time.Minute, time.Duration(viper.GetInt("cache-expire"))*time.Minute)
 
 	e := echo.New()
+
+	if viper.GetBool("otel.enabled") {
+		e.Use(otelecho.Middleware(os.Getenv("OTEL_SERVICE_NAME"), otelecho.WithSkipper(func(c echo.Context) bool {
+			return strings.Contains(c.Path(), "public/dist") || strings.Contains(c.Path(), "health")
+		})))
+	}
 
 	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 		Skipper: func(c echo.Context) bool {
@@ -101,11 +142,10 @@ func main() {
 
 	e.HideBanner = true
 
-	if viper.GetBool("verbose") {
+	if strings.EqualFold(viper.GetString("log.level"), "debug") {
 		e.Logger.SetLevel(log.DEBUG)
+		e.Debug = true
 	}
-
-	e.Debug = viper.GetBool("debug")
 
 	t := &Template{
 		templates: template.Must(template.ParseFS(getEmbededViews(), "*.html")),
@@ -113,7 +153,8 @@ func main() {
 
 	e.Renderer = t
 
-	e.Use(middleware.Logger())
+	e.Use(slogecho.New(slog.Default()))
+	e.Use(middleware.Recover())
 
 	assetHandler := http.FileServer(getEmbededAssets())
 	e.GET("/public/dist/*", echo.WrapHandler(http.StripPrefix("/public/dist/", assetHandler)))
