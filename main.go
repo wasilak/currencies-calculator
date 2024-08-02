@@ -111,12 +111,18 @@ func main() {
 		}
 	}
 
-	loggerConfig := loggergo.LoggerGoConfig{
-		Level:  viper.GetString("log.level"),
-		Format: viper.GetString("log.format"),
+	loggerConfig := loggergo.Config{
+		Level:  loggergo.LogLevelFromString(viper.GetString("log.level")),
+		Format: loggergo.LogFormatFromString(viper.GetString("log.format")),
 	}
 
-	_, err := loggergo.LoggerInit(loggerConfig)
+	if viper.GetBool("otel.enabled") {
+		loggerConfig.OtelLoggerName = "github.com/wasilak/currenccies-calculator"
+		loggerConfig.OtelServiceName = os.Getenv("OTEL_SERVICE_NAME")
+		loggerConfig.OtelTracingEnabled = true
+	}
+
+	_, err := loggergo.LoggerInit(ctx, loggerConfig)
 	if err != nil {
 		slog.ErrorContext(ctx, "error", "value", err.Error())
 		os.Exit(1)
