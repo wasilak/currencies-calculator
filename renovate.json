@@ -3,15 +3,8 @@
   "extends": [
     "config:recommended"
   ],
-  "packageRules": [
-    {
-      "matchManagers": [
-        "*"
-      ],
-      "pinDigests": false,
-      "enabled": true,
-      "separateMajorMinor": true,
-      "automerge": true
-    }
-  ]
+  "pinDigests": false,
+  "enabled": true,
+  "separateMajorMinor": true,
+  "automerge": true
 }
