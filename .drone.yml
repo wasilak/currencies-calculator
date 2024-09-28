@@ -18,7 +18,7 @@ environment:
 
 steps:
   - name: build executable
-    image: quay.io/wasilak/golang:1.16-alpine
+    image: quay.io/wasilak/golang:1.23-alpine
     pull: if-not-exists
     commands:
       - apk add --update --no-cache yarn
@@ -86,7 +86,7 @@ environment:
 
 steps:
   - name: build executable
-    image: quay.io/wasilak/golang:1.16-alpine
+    image: quay.io/wasilak/golang:1.23-alpine
     pull: if-not-exists
     commands:
       - apk add --update --no-cache yarn
