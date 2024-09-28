@@ -37,14 +37,14 @@
     js-tokens "^4.0.0"
     picocolors "^1.0.0"
 
-"@babel/runtime@^7.12.5", "@babel/runtime@^7.18.3", "@babel/runtime@^7.23.2":
+"@babel/runtime@^7.12.5", "@babel/runtime@^7.18.3":
   version "7.24.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.6.tgz#5b76eb89ad45e2e4a0a8db54c456251469a3358e"
   integrity sha512-Ja18XcETdEl5mzzACGd+DKgaGJzPTCow7EglgwTmHdwokzDFYh/MHua6lU6DV/hjF2IaOJ4oX2nqnjG7RElKOw==
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@babel/runtime@^7.25.0", "@babel/runtime@^7.25.6", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.23.2", "@babel/runtime@^7.25.0", "@babel/runtime@^7.25.6", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
   version "7.25.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.25.6.tgz#9afc3289f7184d8d7f98b099884c26317b9264d2"
   integrity sha512-VBj9MYyDb9tuLq7yzqjgzt6Q+IBQLrGZfdjOekyEirZPHxXWoTSGUTMrpsfi58Up73d13NfYLv8HT9vmznjzhQ==
@@ -2487,9 +2487,9 @@ i18next-browser-languagedetector@^8.0.0:
     "@babel/runtime" "^7.23.2"
 
 i18next@^23.14.0:
-  version "23.14.0"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-23.14.0.tgz#d415a858390cc849f3db0df539cb2bbfe24a3cdb"
-  integrity sha512-Y5GL4OdA8IU2geRrt2+Uc1iIhsjICdHZzT9tNwQ3TVqdNzgxHToGCKf/TPRP80vTCAP6svg2WbbJL+Gx5MFQVA==
+  version "23.15.1"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-23.15.1.tgz#c50de337bf12ca5195e697cc0fbe5f32304871d9"
+  integrity sha512-wB4abZ3uK7EWodYisHl/asf8UYEhrI/vj/8aoSsrj/ZDxj4/UXPOa1KvFt1Fq5hkUHquNqwFlDprmjZ8iySgYA==
   dependencies:
     "@babel/runtime" "^7.23.2"
 
