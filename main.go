@@ -100,7 +100,7 @@ func main() {
 	}
 
 	if viper.GetBool("otel.enabled") {
-		otelGoTracingConfig := otelgotracer.OtelGoTracingConfig{
+		otelGoTracingConfig := otelgotracer.Config{
 			HostMetricsEnabled:    true,
 			RuntimeMetricsEnabled: true,
 		}
