@@ -5,6 +5,9 @@
   ],
   "packageRules": [
     {
+      "matchManagers": [
+        "*"
+      ],
       "pinDigests": false,
       "enabled": true,
       "separateMajorMinor": true,
