@@ -9,10 +9,10 @@ ENV NODE_ENV=production
 RUN yarn install
 RUN yarn build
 RUN mkdir -p ../dist
-RUN go build -o /currencies-calculator
+RUN CGO_ENABLED=0 go build -o /currencies-calculator
 
-FROM quay.io/wasilak/alpine:3
+FROM scratch
 
-COPY --from=builder /currencies-calculator /currencies-calculator
+COPY --from=builder /currencies-calculator .
 
 ENTRYPOINT ["/currencies-calculator", "--listen=0.0.0.0:3000"]
