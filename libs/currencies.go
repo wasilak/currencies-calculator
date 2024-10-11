@@ -43,9 +43,13 @@ func GetCurrencies(cache *gocache.Cache, force string) RatesResponse {
 
 		client := &http.Client{}
 		req, err := http.NewRequest("GET", currenciesUrl, nil)
-		req.Header.Set("user-agent", "curl/7.87.0")
-		res, _ := client.Do(req)
+		if err != nil {
+			log.Fatal(err)
+		}
 
+		req.Header.Set("user-agent", "curl/7.87.0")
+
+		res, err := client.Do(req)
 		if err != nil {
 			log.Fatal(err)
 		}
