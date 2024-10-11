@@ -19,4 +19,6 @@ FROM scratch
 COPY --from=builder /currencies-calculator .
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
+ENV USER=root
+
 ENTRYPOINT ["/currencies-calculator", "--listen=0.0.0.0:3000"]
