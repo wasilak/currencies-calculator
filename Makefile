@@ -1,6 +1,7 @@
+.PHONY install: yarn
 .PHONY dev: lint vite-dev go
 .PHONY prod: lint vite go
-.PHONY build-all-prod: lint yarn prod
+.PHONY build-all-prod: install lint prod
 
 yarn:
 	@yarn install
