@@ -1,14 +1,28 @@
 {
     "compilerOptions": {
         "outDir": "./dist/",
-        "noImplicitAny": true,
-        "module": "esnext",
-        "target": "es5",
-        "jsx": "react-jsx",
-        "allowJs": true,
-        "moduleResolution": "node",
+        "target": "esnext", // Use a modern target
+        "module": "esnext", // Keep ES module format for compatibility with Vite
+        "jsx": "react-jsx", // For React 17+ JSX runtime
+        "allowJs": true, // Allows JavaScript files to be compiled
+        "moduleResolution": "bundler", // Node resolution is more standard and compatible with Vite
+        "strict": true, // Enable all strict type-checking options
+        "esModuleInterop": true, // Allows for better interoperability between CommonJS and ES modules
+        "skipLibCheck": true, // Skip checking library declaration files (speeds up compilation)
+        "forceConsistentCasingInFileNames": true, // Ensures file name casing consistency
+        "resolveJsonModule": true, // Allows importing JSON modules
+        "isolatedModules": true, // Necessary for compatibility with Vite
         "types": [
-            "node"
+            "node",
+            "vite/client" // Includes Vite client types for HMR and Vite-specific globals
         ]
-    }
+    },
+    "include": [
+        "./web/src/**/*.ts",
+        "./web/src/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
 }

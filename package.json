@@ -2,35 +2,24 @@
   "name": "currencies-calculator",
   "version": "v1.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@mui/material": "^6.0.1",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
-    "@typescript-eslint/eslint-plugin": "8.8.1",
-    "@typescript-eslint/parser": "^8.3.0",
-    "axios": "^1.7.7",
-    "dotenv-webpack": "^8.1.0",
-    "eslint": "^9.9.1",
-    "eslint-plugin-react": "^7.35.0",
-    "html-webpack-plugin": "^5.6.0",
-    "i18next": "^23.14.0",
-    "i18next-browser-languagedetector": "^8.0.0",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
-    "react-hot-loader": "^4.13.1",
-    "react-i18next": "^15.0.1",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.5.4",
-    "webpack": "^5.94.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@mui/material": "^6",
+    "axios": "^1",
+    "i18next": "^23",
+    "i18next-browser-languagedetector": "^8",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-i18next": "^15"
   },
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "dev-server": "webpack-dev-server"
+    "dev": "vite",
+    "build": "vite build",
+    "buildDev": "vite build --mode development",
+    "serve": "vite preview",
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
@@ -49,5 +38,19 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "8",
+    "@typescript-eslint/parser": "^8",
+    "@vitejs/plugin-react": "^4",
+    "dotenv": "^16",
+    "eslint": "^9",
+    "eslint-plugin-react": "^7",
+    "eslint-plugin-react-hooks": "^5",
+    "typescript": "^5",
+    "vite": "^5"
   }
 }

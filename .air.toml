@@ -8,24 +8,15 @@ tmp_dir = "tmp"
 [build]
 # Just plain old shell command. You could use `make` as well.
 # cmd = "go build -o ./tmp/main ."
-cmd = "NODE_ENV=development CC_LOG_LEVEL=debug make dev"
+cmd = "make dev"
 # Binary file yields from `cmd`.
 bin = "tmp/main"
 # Customize binary.
-full_bin = "./tmp/main"
+full_bin = "CC_LOG_LEVEL=debug ./tmp/main"
 # Watch these filename extensions.
-include_ext = ["go", "tpl", "tmpl", "html", "ts", "tsx"]
+include_ext = ["go", "tpl", "tmpl", "html", "ts", "tsx", "css", "scss"]
 # Ignore these filename extensions or directories.
-exclude_dir = [
-    "assets",
-    "tmp",
-    "vendor",
-    "frontend/node_modules",
-    "node_modules",
-    "js/src",
-    "public/js",
-    "dist",
-]
+exclude_dir = ["web/assets", "tmp", "vendor", "node_modules", "dist"]
 # Watch these directories if you specified.
 include_dir = []
 # Exclude files.

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { CurrenciesSelect } from "./lib/CurrenciesSelect"
 import { CurrenciesHeader } from "./lib/CurrenciesHeader"
 import { Model, WalutaPL, Rate } from "./lib/models"
@@ -16,6 +16,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 
+import LoaderComponent from "./lib/Loader";
+
 const defaultTheme = createTheme();
 
 const resources = Translations()
@@ -31,11 +33,11 @@ i18next.use(LanguageDetector).use(initReactI18next).init({
 });
 
 const App = () => {
-    const [currencies, setCurrencies] = useState<Model>(undefined);
+    const [currencies, setCurrencies] = useState<Model | null>(null);
 
     const { t } = useTranslation();
 
-    const midRateCalculate = (selected: string): string => {
+    const midRateCalculate = useCallback((selected: string): string => {
         if (currencies) {
             return currencies.data.rates.filter((value: Rate) => {
                 return value.code == selected;
@@ -43,7 +45,7 @@ const App = () => {
         }
 
         return '1.0';
-    };
+    }, [currencies]);
 
     const getCurrencyFromLocalStorage = (requestType: string): string => {
         const item = localStorage.getItem(requestType);
@@ -61,10 +63,10 @@ const App = () => {
     const [amountFrom, setAmountFrom] = useState(1);
     const [amountTo, setAmountTo] = useState(1);
 
-    const doCalculation = (): number => {
+    const doCalculation = useCallback((): number => {
         const result: number = (parseFloat(midRateFrom) * amountFrom / parseFloat(midRateTo));
         return result;
-    };
+    }, [midRateFrom, amountFrom, midRateTo]);
 
     const handleChangeFrom = (selectedOption: any) => {
         setSelectedFrom(selectedOption.target.value);
@@ -95,38 +97,40 @@ const App = () => {
         setSelectedTo(getCurrencyFromLocalStorage("to"));
         setMidRateFrom(midRateCalculate(getCurrencyFromLocalStorage("from")));
         setMidRateTo(midRateCalculate(getCurrencyFromLocalStorage("to")));
-    }, [currencies]);
+    }, [currencies, midRateCalculate]);
 
     useEffect(() => {
         setAmountTo(doCalculation());
-    }, [midRateTo, midRateFrom, amountFrom])
+    }, [midRateTo, midRateFrom, amountFrom, doCalculation])
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="sm" sx={{ mt: 2 }}>
-                <CssBaseline />
-                <Box>
-                    <Box sx={{ mb: 3 }}>
-                        <CurrenciesHeader currencies={currencies}></CurrenciesHeader>
-                    </Box>
-
-                    <Box sx={{ mb: 3 }}>
-                        <CurrenciesSelect currencies={currencies} selected={selectedFrom} onChange={handleChangeFrom} midRate={midRateFrom} label={t("from")}></CurrenciesSelect>
-                    </Box>
-
-                    <Box sx={{ mb: 3 }}>
-                        <CurrenciesSelect currencies={currencies} selected={selectedTo} onChange={handleChangeTo} midRate={midRateTo} label={t("to")}></CurrenciesSelect>
-                    </Box>
-
-                    <Box sx={{ mb: 3 }}>
-                        <TextField fullWidth label={t("amount")} variant="outlined" value={amountFrom} onChange={handleAmountFrom} />
-                    </Box>
-
+            <LoaderComponent>
+                <Container component="main" maxWidth="sm" sx={{ mt: 2 }}>
+                    <CssBaseline />
                     <Box>
-                        <TextField fullWidth disabled label={t("value_in_selected_currency")} variant="outlined" value={`${amountFrom} ${selectedFrom} = ${amountTo} ${selectedTo}`} />
+                        <Box sx={{ mb: 3 }}>
+                            <CurrenciesHeader currencies={currencies}></CurrenciesHeader>
+                        </Box>
+
+                        <Box sx={{ mb: 3 }}>
+                            <CurrenciesSelect currencies={currencies} selected={selectedFrom} onChange={handleChangeFrom} midRate={midRateFrom} label={t("from")}></CurrenciesSelect>
+                        </Box>
+
+                        <Box sx={{ mb: 3 }}>
+                            <CurrenciesSelect currencies={currencies} selected={selectedTo} onChange={handleChangeTo} midRate={midRateTo} label={t("to")}></CurrenciesSelect>
+                        </Box>
+
+                        <Box sx={{ mb: 3 }}>
+                            <TextField fullWidth label={t("amount")} variant="outlined" value={amountFrom} onChange={handleAmountFrom} />
+                        </Box>
+
+                        <Box>
+                            <TextField fullWidth disabled label={t("value_in_selected_currency")} variant="outlined" value={`${amountFrom} ${selectedFrom} = ${amountTo} ${selectedTo}`} />
+                        </Box>
                     </Box>
-                </Box>
-            </Container>
+                </Container>
+            </LoaderComponent>
         </ThemeProvider>
 
     );
