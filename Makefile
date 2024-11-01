@@ -1,6 +1,6 @@
-.PHONY dev: vite-dev go
-.PHONY prod: vite go
-.PHONY build-all-prod: yarn prod
+.PHONY dev: lint vite-dev go
+.PHONY prod: lint vite go
+.PHONY build-all-prod: lint yarn prod
 
 yarn:
 	@yarn install
@@ -10,6 +10,9 @@ vite:
 
 vite-dev:
 	@yarn buildDev
+
+lint:
+	@yarn lint
 
 go:
 	@go build -o ./tmp/main .

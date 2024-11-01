@@ -7,11 +7,15 @@ import reactHooks from "eslint-plugin-react-hooks";
 
 const config = [
     {
+        // Define ignores globally
+        ignores: ["web/assets/**/*.{js,jsx,ts,tsx}"],
+    },
+    {
         files: ["web/src/**/*.{js,jsx,ts,tsx}"],
         languageOptions: {
             ecmaVersion: "latest",
             sourceType: "module",
-            parser: typescriptParser, // Updated parser assignment
+            parser: typescriptParser,
             parserOptions: {
                 ecmaFeatures: {
                     jsx: true, // Enable JSX parsing
