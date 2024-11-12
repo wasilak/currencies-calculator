@@ -142,6 +142,8 @@ github.com/wasilak/loggergo v1.5.2 h1:a4xLzwh0toiNeAQuJHvanFLboIqwTGcHqAl8SiDiTm
 github.com/wasilak/loggergo v1.5.2/go.mod h1:UyIz49pllV0W/QipCDUJ5roANzTB3Vq09bDY9c6UeGQ=
 github.com/wasilak/loggergo v1.5.3 h1:+flzE0VrB5mLC3k0IK+fQugaB/beQD/ji0GYCceEoCI=
 github.com/wasilak/loggergo v1.5.3/go.mod h1:nB+vh2EuLMXH0LrFzWRORrNvmSsp+6M9+EsYwJmOAj0=
+github.com/wasilak/loggergo v1.5.4 h1:hVvkddAlCpqLAls7FWuX1Z12102OUrNdI/3m2RYCb/Y=
+github.com/wasilak/loggergo v1.5.4/go.mod h1:Bvt7I7+XxjVGd3qu9OMhuQdNf6/UN31VOdHmEeSY8C4=
 github.com/wasilak/otelgo v1.1.1 h1:f8p0VYTwSfPl0OC9BwO5r1DkQ/oNt9YoHTy19RQCNjs=
 github.com/wasilak/otelgo v1.1.1/go.mod h1:inPRzMpVWJ54sDHq9Xdg0dhjHWzMME1uP4RSgr1S8lo=
 github.com/yusufpapurcu/wmi v1.2.4 h1:zFUKzehAFReQwLys1b/iSMl+JQGSCSjtVqQn9bBrPo0=
@@ -152,6 +154,8 @@ gitlab.com/greyxor/slogor v1.4.1 h1:KSRMOYDRtMwPPOzIlqcN0fpB9hayKQC6vWCOwCtMrX4=
 gitlab.com/greyxor/slogor v1.4.1/go.mod h1:RvD/RqmEGpqVhL8tqqfVduuxtcik6uXCnzfikaFCwto=
 gitlab.com/greyxor/slogor v1.5.0 h1:9mwWDoK+gagAkYjSEEVi5QZ+5uq5KsF9khVsKJ/VSQc=
 gitlab.com/greyxor/slogor v1.5.0/go.mod h1:P8dDYZxKsh/omu91z+vep/m78GxWEOc2KP2f0zaCasE=
+gitlab.com/greyxor/slogor v1.5.1 h1:XdXkCAnoxcBV4j9AiPLjabQPP0yEd/mRYu6tTRY84UQ=
+gitlab.com/greyxor/slogor v1.5.1/go.mod h1:P8dDYZxKsh/omu91z+vep/m78GxWEOc2KP2f0zaCasE=
 go.opentelemetry.io/contrib/bridges/otelslog v0.5.0 h1:lU3F57OSLK5mQ1PDBVAfDDaKCPv37MrEbCfTzsF4bz0=
 go.opentelemetry.io/contrib/bridges/otelslog v0.5.0/go.mod h1:I84u06zJFr8T5D73fslEUbnRBimVVSBhuVw8L8I92AU=
 go.opentelemetry.io/contrib/bridges/otelslog v0.6.0 h1:V/XtFJ8mMisAO2E0tXcgwi40wJUxbiz8I2/RtgaZ8AU=
