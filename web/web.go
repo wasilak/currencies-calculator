@@ -22,7 +22,7 @@ import (
 	slogecho "github.com/samber/slog-echo"
 	"github.com/spf13/viper"
 	"github.com/wasilak/currencies-calculator/libs"
-	"github.com/wasilak/loggergo"
+	loggergoLib "github.com/wasilak/loggergo/lib"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 )
 
@@ -120,7 +120,7 @@ func (ws *WebServer) Init() {
 
 	e.HideBanner = true
 
-	if loggergo.LogLevelFromString(viper.GetString("log.level")) == slog.LevelDebug {
+	if loggergoLib.LogLevelFromString(viper.GetString("log.level")) == slog.LevelDebug {
 		e.Logger.SetLevel(log.DEBUG)
 		e.Debug = true
 	}
