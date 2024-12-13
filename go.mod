@@ -15,7 +15,7 @@ require (
 	github.com/spf13/viper v1.19.0
 	github.com/wasilak/loggergo v1.7.3
 	github.com/wasilak/otelgo v1.2.3
-	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.57.0
+	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.58.0
 )
 
 require (

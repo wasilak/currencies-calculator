@@ -140,6 +140,8 @@ go.opentelemetry.io/contrib/bridges/otelslog v0.8.0 h1:G3sKsNueSdxuACINFxKrQeimA
 go.opentelemetry.io/contrib/bridges/otelslog v0.8.0/go.mod h1:ptJm3wizguEPurZgarDAwOeX7O0iMR7l+QvIVenhYdE=
 go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.57.0 h1:0q9nZfgQarTPiePf+H4GLNE/9w5yasXMsRFPvTTZI1Q=
 go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.57.0/go.mod h1:Fi8pgZRfhlYA6WEVVdeDdRigT/+y7YO8I0C3QXZg1QU=
+go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.58.0 h1:DBk8Zh+Yn3WtWCdGSx1pbEV9/naLtjG16c1zwQA2MBI=
+go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.58.0/go.mod h1:DFx32LPclW1MNdSKIMrjjetsk0tJtYhAvuGjDIG2SKE=
 go.opentelemetry.io/contrib/instrumentation/host v0.57.0 h1:1gfzOyXEuCrrwCXF81LO3DQ4rll6YBKfAQHPl+03mik=
 go.opentelemetry.io/contrib/instrumentation/host v0.57.0/go.mod h1:pHBt+1Rhz99VBX7AQVgwcKPf611zgD6pQy7VwBNMFmE=
 go.opentelemetry.io/contrib/instrumentation/host v0.58.0 h1:vstBQcCXLI4Q98dK0Ijw3PPRD+Lq9kTzK46wloSB3uk=
