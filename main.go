@@ -11,6 +11,7 @@ import (
 	gocache "github.com/patrickmn/go-cache"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"github.com/wasilak/currencies-calculator/libs"
 	"github.com/wasilak/currencies-calculator/web"
 	"github.com/wasilak/loggergo"
 	loggergoLib "github.com/wasilak/loggergo/lib"
@@ -23,6 +24,9 @@ func main() {
 	ctx := context.Background()
 
 	flag.String("listen", "localhost:3000", "listen address")
+	flag.Bool("otel.enabled", true, "OTEL enabled")
+	flag.String("log.format", "json", "log format")
+	flag.String("log.level", "info", "log level")
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
@@ -55,13 +59,15 @@ func main() {
 	}
 
 	loggerConfig := loggergoTypes.Config{
-		Level:  loggergoLib.LogLevelFromString(viper.GetString("log.level")),
-		Format: loggergoLib.LogFormatFromString(viper.GetString("log.format")),
+		Level:   loggergoLib.LogLevelFromString(viper.GetString("log.level")),
+		Format:  loggergoLib.LogFormatFromString(viper.GetString("log.format")),
+		DevMode: loggergoLib.LogLevelFromString(viper.GetString("log.level")) == slog.LevelDebug && viper.GetString("log.format") == "plain",
+		Output:  loggergoTypes.OutputConsole,
 	}
 
 	if viper.GetBool("otel.enabled") {
 		loggerConfig.OtelLoggerName = "github.com/wasilak/currenccies-calculator"
-		loggerConfig.OtelServiceName = os.Getenv("OTEL_SERVICE_NAME")
+		loggerConfig.OtelServiceName = libs.GetAppName()
 		loggerConfig.OtelTracingEnabled = true
 	}
 
