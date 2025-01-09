@@ -108,7 +108,7 @@ func (ws *WebServer) Init() {
 
 	if viper.GetBool("otel.enabled") {
 		e.Use(otelecho.Middleware(os.Getenv("OTEL_SERVICE_NAME"), otelecho.WithSkipper(func(c echo.Context) bool {
-			return strings.Contains(c.Path(), "/assets") || strings.Contains(c.Path(), "health")
+			return strings.Contains(c.Path(), "/assets") || strings.Contains(c.Path(), "health") || strings.Contains(c.Path(), "metrics")
 		})))
 	}
 
