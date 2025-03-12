@@ -126,6 +126,8 @@ github.com/samber/slog-echo v1.15.0 h1:xzdHyyM9bTyQpEFIGHi6oERY1puUh5zYxiRhOhzT4
 github.com/samber/slog-echo v1.15.0/go.mod h1:K21nbusPmai/MYm8PFactmZoFctkMmkeaTdXXyvhY1c=
 github.com/samber/slog-echo v1.15.1 h1:mzeQNPYPxmpehIRtgQJRgJMVvrRbZHp5D2maxSljTBw=
 github.com/samber/slog-echo v1.15.1/go.mod h1:K21nbusPmai/MYm8PFactmZoFctkMmkeaTdXXyvhY1c=
+github.com/samber/slog-echo v1.16.1 h1:5Q5IUROkFqKcu/qJM/13AP1d3gd1RS+Q/4EvKQU1fuo=
+github.com/samber/slog-echo v1.16.1/go.mod h1:f+B3WR06saRXcaGRZ/I/UPCECDPqTUqadRIf7TmyRhI=
 github.com/samber/slog-multi v1.2.4 h1:k9x3JAWKJFPKffx+oXZ8TasaNuorIW4tG+TXxkt6Ry4=
 github.com/samber/slog-multi v1.2.4/go.mod h1:ACuZ5B6heK57TfMVkVknN2UZHoFfjCwRxR0Q2OXKHlo=
 github.com/samber/slog-multi v1.3.3 h1:qhFXaYdW73FIWLt8SrXMXfPwY58NpluzKDwRdPvhWWY=
