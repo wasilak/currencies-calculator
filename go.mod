@@ -12,7 +12,7 @@ require (
 	github.com/prometheus/client_golang v1.21.1
 	github.com/samber/slog-echo v1.16.1
 	github.com/spf13/pflag v1.0.6
-	github.com/spf13/viper v1.20.0
+	github.com/spf13/viper v1.20.1
 	github.com/wasilak/loggergo v1.7.4
 	github.com/wasilak/otelgo v1.2.4
 	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.60.0
