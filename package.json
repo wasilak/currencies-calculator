@@ -6,7 +6,7 @@
   "dependencies": {
     "@emotion/react": "~11",
     "@emotion/styled": "~11",
-    "@mui/material": "~6",
+    "@mui/material": "~7.0.0",
     "axios": "~1",
     "i18next": "~24",
     "i18next-browser-languagedetector": "~8",
