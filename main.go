@@ -14,8 +14,6 @@ import (
 	"github.com/wasilak/currencies-calculator/libs"
 	"github.com/wasilak/currencies-calculator/web"
 	"github.com/wasilak/loggergo"
-	loggergoLib "github.com/wasilak/loggergo/lib"
-	loggergoTypes "github.com/wasilak/loggergo/lib/types"
 	otelgotracer "github.com/wasilak/otelgo/tracing"
 )
 
@@ -58,11 +56,11 @@ func main() {
 		}
 	}
 
-	loggerConfig := loggergoTypes.Config{
-		Level:   loggergoLib.LogLevelFromString(viper.GetString("log.level")),
-		Format:  loggergoLib.LogFormatFromString(viper.GetString("log.format")),
-		DevMode: loggergoLib.LogLevelFromString(viper.GetString("log.level")) == slog.LevelDebug && viper.GetString("log.format") == "plain",
-		Output:  loggergoTypes.OutputConsole,
+	loggerConfig := loggergo.Config{
+		Level:   loggergo.Types.LogLevelFromString(viper.GetString("log.level")),
+		Format:  loggergo.Types.LogFormatFromString(viper.GetString("log.format")),
+		DevMode: loggergo.Types.LogLevelFromString(viper.GetString("log.level")) == slog.LevelDebug && viper.GetString("log.format") == "plain",
+		Output:  loggergo.Types.OutputConsole,
 	}
 
 	if viper.GetBool("otel.enabled") {
