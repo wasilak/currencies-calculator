@@ -46,7 +46,7 @@
     "@typescript-eslint/eslint-plugin": "~8",
     "@typescript-eslint/parser": "~8",
     "@vitejs/plugin-react": "~4",
-    "dotenv": "~16",
+    "dotenv": "~17.0.0",
     "eslint": "~9",
     "eslint-plugin-react": "~7",
     "eslint-plugin-react-hooks": "~5",
