@@ -2,7 +2,7 @@ module github.com/wasilak/currencies-calculator
 
 go 1.24
 
-toolchain go1.24.4
+toolchain go1.24.5
 
 require (
 	github.com/labstack/echo-contrib v0.17.4
