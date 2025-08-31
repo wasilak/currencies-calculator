@@ -11,7 +11,7 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/prometheus/client_golang v1.23.0
 	github.com/samber/slog-echo v1.17.1
-	github.com/spf13/pflag v1.0.7
+	github.com/spf13/pflag v1.0.8
 	github.com/spf13/viper v1.20.1
 	github.com/wasilak/loggergo v1.7.8
 	github.com/wasilak/otelgo v1.2.6
