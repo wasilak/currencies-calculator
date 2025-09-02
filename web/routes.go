@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -123,8 +124,17 @@ func (ws *WebServer) apiPrometheusMetricsRoute(c echo.Context) error {
 	// Get the "from" and "to" currency codes from query parameters
 	fromCurrency := c.QueryParam("from")
 	toCurrency := c.QueryParam("to")
+	daysParam := c.QueryParam("days")
 
-	slog.Debug("Prometheus metrics request", "from", fromCurrency, "to", toCurrency)
+	// Default to 7 days if not specified
+	days := 7
+	if daysParam != "" {
+		if parsedDays, err := strconv.Atoi(daysParam); err == nil && parsedDays > 0 {
+			days = parsedDays
+		}
+	}
+
+	slog.Debug("Prometheus metrics request", "from", fromCurrency, "to", toCurrency, "days", days)
 
 	if fromCurrency == "" || toCurrency == "" {
 		slog.Debug("Missing required query parameters")
@@ -137,7 +147,7 @@ func (ws *WebServer) apiPrometheusMetricsRoute(c echo.Context) error {
 	prometheusURL := viper.GetString("prometheus-url")
 	if prometheusURL != "" {
 		// Use external Prometheus server for historical data
-		return ws.queryExternalPrometheus(c, fromCurrency, toCurrency, prometheusURL)
+		return ws.queryExternalPrometheus(c, fromCurrency, toCurrency, prometheusURL, days)
 	}
 
 	// Fallback to local metrics (current behavior)
@@ -145,7 +155,7 @@ func (ws *WebServer) apiPrometheusMetricsRoute(c echo.Context) error {
 }
 
 // queryExternalPrometheus queries an external Prometheus server for historical data
-func (ws *WebServer) queryExternalPrometheus(c echo.Context, fromCurrency, toCurrency, prometheusURL string) error {
+func (ws *WebServer) queryExternalPrometheus(c echo.Context, fromCurrency, toCurrency, prometheusURL string, days int) error {
 	// Create HTTP client with optional SSL verification skip
 	client := &http.Client{
 		Timeout: 30 * time.Second,
@@ -161,17 +171,17 @@ func (ws *WebServer) queryExternalPrometheus(c echo.Context, fromCurrency, toCur
 		}
 	}
 
-	// Build PromQL query for the last 24 hours of data
-	// Query for both currencies with 5-minute intervals
-	query := fmt.Sprintf(`currency_rate{code=~"(%s|%s)"}[24h:5m]`, fromCurrency, toCurrency)
+	// Build PromQL query for the specified number of days
+	// Query for both currencies with 1-hour intervals for better performance
+	query := fmt.Sprintf(`currency_rate{code=~"(%s|%s)"}[%dd:1h]`, fromCurrency, toCurrency, days)
 
 	// Create the query URL
 	queryURL := fmt.Sprintf("%s/api/v1/query_range", prometheusURL)
 	params := url.Values{}
 	params.Add("query", query)
-	params.Add("start", fmt.Sprintf("%d", time.Now().Add(-24*time.Hour).Unix()))
+	params.Add("start", fmt.Sprintf("%d", time.Now().Add(-time.Duration(days)*24*time.Hour).Unix()))
 	params.Add("end", fmt.Sprintf("%d", time.Now().Unix()))
-	params.Add("step", "300") // 5-minute steps
+	params.Add("step", "3600") // 1-hour steps for better performance with longer time ranges
 
 	fullURL := fmt.Sprintf("%s?%s", queryURL, params.Encode())
 

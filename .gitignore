@@ -98,6 +98,9 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # Runtime data
 pids
 *.pid
+
+# Bundle analysis
+bundle-analysis.html
 *.seed
 *.pid.lock
 

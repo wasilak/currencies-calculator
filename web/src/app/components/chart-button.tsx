@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, lazy, Suspense } from "react"
 import { BarChart3 } from "lucide-react"
 import { Button } from "./ui/button"
 import { Modal } from "./ui/modal"
-import PrometheusChart from "./prometheus-chart"
 import { checkPrometheusEnabled } from "../lib/api"
 import { useTranslation } from "react-i18next"
+
+// Lazy load the chart component to reduce initial bundle size
+const PrometheusChart = lazy(() => import("./prometheus-chart"))
 
 interface ChartButtonProps {
     fromCurrency: string
@@ -54,7 +56,9 @@ const ChartButton = ({ fromCurrency, toCurrency }: ChartButtonProps) => {
                 onClose={() => setIsModalOpen(false)}
                 title={t("currency_rate_history")}
             >
-                <PrometheusChart fromCurrency={fromCurrency} toCurrency={toCurrency} hideTitle={true} />
+                <Suspense fallback={<div>Loading chart...</div>}>
+                    <PrometheusChart fromCurrency={fromCurrency} toCurrency={toCurrency} hideTitle={true} />
+                </Suspense>
             </Modal>
         </>
     )

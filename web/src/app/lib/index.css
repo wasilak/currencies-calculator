@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
   :root {
@@ -49,12 +47,43 @@
   }
   
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
   
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Fix transparent backgrounds for inputs and selects - BOTH THEMES */
+  input, select, textarea {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Ensure select triggers have proper backgrounds - BOTH THEMES */
+  [data-radix-select-trigger] {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Ensure input fields have proper backgrounds - BOTH THEMES */
+  [data-radix-input] {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Additional fixes for light theme */
+  input,
+  select,
+  textarea {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border)) !important;
   }
 }
 
@@ -67,35 +96,65 @@
   /* Force dark backgrounds and light text for all dropdowns in dark mode */
   .dark [data-radix-select-content],
   .dark [data-radix-dropdown-menu-content] {
-    @apply bg-popover border-border text-popover-foreground !important;
+    background-color: hsl(var(--popover)) !important;
+    color: hsl(var(--popover-foreground)) !important;
+    border-color: hsl(var(--border));
   }
 
   /* Force light text for all dropdown items in dark mode */
   .dark [data-radix-select-item],
   .dark [data-radix-dropdown-menu-item] {
-    @apply text-popover-foreground !important;
+    color: hsl(var(--popover-foreground)) !important;
   }
 
   /* Force proper hover states in dark mode */
   .dark [data-radix-select-item]:hover,
   .dark [data-radix-dropdown-menu-item]:hover {
-    @apply bg-accent text-accent-foreground !important;
+    background-color: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
   }
 
   /* Force proper selected states in dark mode */
   .dark [data-radix-select-item][data-state="checked"],
   .dark [data-radix-select-item][data-highlighted],
   .dark [data-radix-dropdown-menu-item][data-highlighted] {
-    @apply bg-accent text-accent-foreground !important;
+    background-color: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
   }
 
   /* Force proper styling for select triggers in dark mode */
   .dark [data-radix-select-trigger] {
-    @apply bg-background border-border text-foreground !important;
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border));
   }
 
   /* Force proper styling for dropdown triggers in dark mode */
   .dark [data-radix-dropdown-menu-trigger] {
-    @apply bg-background border-border text-foreground !important;
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border));
+  }
+
+  /* Additional fixes for transparent backgrounds - BOTH THEMES */
+  input,
+  select,
+  textarea {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Fix for any remaining transparent elements - BOTH THEMES */
+  [class*="bg-"] {
+    background-color: hsl(var(--background)) !important;
+  }
+
+  /* Light theme specific fixes */
+  [data-radix-select-trigger],
+  [data-radix-input] {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border)) !important;
   }
 }

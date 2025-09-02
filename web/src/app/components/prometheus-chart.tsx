@@ -52,7 +52,8 @@ const PrometheusChart = ({ fromCurrency, toCurrency, hideTitle = false }: { from
       setError(null)
 
       try {
-        const response = await fetch(`/api/prometheus-metrics?from=${fromCurrency}&to=${toCurrency}`)
+        // Query for 7 days of data
+        const response = await fetch(`/api/prometheus-metrics?from=${fromCurrency}&to=${toCurrency}&days=7`)
 
         if (response.status === 403) {
           setEnabled(false)
@@ -73,7 +74,8 @@ const PrometheusChart = ({ fromCurrency, toCurrency, hideTitle = false }: { from
 
         if (metricsData.data?.result && metricsData.data.result.length > 0) {
           metricsData.data.result.forEach(metric => {
-            const timestamp = new Date(metric.value[0] * 1000).toLocaleTimeString()
+            // Use date format instead of time format
+            const timestamp = new Date(metric.value[0] * 1000).toLocaleDateString()
             const value = parseFloat(metric.value[1] as any)
             const currencyCode = metric.metric.code
 
@@ -88,6 +90,17 @@ const PrometheusChart = ({ fromCurrency, toCurrency, hideTitle = false }: { from
             existingEntry[currencyCode] = value
           })
         }
+
+        // Add PLN as constant value of 1 if it's selected
+        if (fromCurrency === "PLN" || toCurrency === "PLN") {
+          // Add PLN value to all existing timestamps
+          chartData.forEach(entry => {
+            entry["PLN"] = 1
+          })
+        }
+
+        // Sort data by timestamp
+        chartData.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
 
         setData(chartData)
       } catch (err) {
