@@ -33,6 +33,10 @@ const config = [
                 localStorage: "readonly",
                 setTimeout: "readonly",
                 clearTimeout: "readonly",
+                fetch: "readonly",
+                setInterval: "readonly",
+                clearInterval: "readonly",
+                React: "readonly",
             },
         },
         plugins: {
@@ -47,8 +51,10 @@ const config = [
             ...reactHooks.configs.recommended.rules,
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+            "@typescript-eslint/no-empty-object-type": "off",
             "react/react-in-jsx-scope": "off",
             "react/jsx-filename-extension": [1, { extensions: [".jsx", ".tsx"] }],
+            "no-undef": "off",
         },
         settings: {
             react: {

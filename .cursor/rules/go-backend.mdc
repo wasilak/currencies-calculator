@@ -1,0 +1,74 @@
+# Go Backend Development Rules
+
+## Project Structure
+- Main application entry point: `main.go`
+- Library code: `libs/` directory
+- Web server: `web/web.go` and `web/routes.go`
+- Configuration: Uses Viper with environment variable prefix `CC_`
+
+## Coding Standards
+
+### Configuration Management
+- Use Viper for configuration management
+- Environment variables use `CC_` prefix (e.g., `CC_ENABLE_PROMETHEUS_UI`)
+- Support both command-line flags and environment variables
+- Default values should be set in `main.go`
+
+### Logging
+- Use structured logging with `github.com/wasilak/loggergo`
+- Log levels: debug, info, error
+- Log formats: json, plain
+- Include context in log messages using `slog.InfoContext(ctx, ...)`
+
+### Error Handling
+- Always check errors and log them appropriately
+- Use `slog.ErrorContext(ctx, "error", "value", err.Error())` for errors
+- Exit with `os.Exit(1)` on critical errors
+
+### Dependencies
+- Use Go modules (go.mod)
+- Prefer well-maintained, popular packages
+- Key dependencies:
+  - `github.com/labstack/echo/v4` for HTTP server
+  - `github.com/spf13/viper` for configuration
+  - `github.com/patrickmn/go-cache` for caching
+  - `github.com/prometheus/client_golang` for metrics
+
+### Caching
+- Use `go-cache` for in-memory caching
+- Default cache expiration: 5 minutes
+- Cache currency rates to avoid excessive API calls
+
+### Metrics and Observability
+- Support Prometheus metrics when `--enable-prometheus-ui=true`
+- Use OpenTelemetry for tracing when `--otel.enabled=true`
+- Metrics refresh interval: 3600 seconds (1 hour)
+- Support external Prometheus server integration
+
+### API Design
+- RESTful API endpoints
+- JSON responses
+- Proper HTTP status codes
+- CORS support for frontend integration
+
+## File Organization
+- Keep main.go focused on application setup and configuration
+- Business logic in `libs/` directory
+- Web server logic in `web/` directory
+- Separate routes from server setup
+
+## Testing
+- Write unit tests for business logic
+- Use Go's built-in testing package
+- Test configuration parsing
+- Test API endpoints
+
+## Performance
+- Use caching for external API calls
+- Implement proper connection pooling
+- Monitor memory usage
+- Use goroutines for concurrent operations when appropriate
+description:
+globs:
+alwaysApply: true
+---

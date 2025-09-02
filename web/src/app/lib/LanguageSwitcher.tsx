@@ -1,33 +1,29 @@
 import { useTranslation } from "react-i18next";
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 
 const LanguageSwitcher = () => {
     const { i18n } = useTranslation();
 
-    const uniqueId = (Date.now() * Math.random()).toString();
-
-    const handleLanguageChange = (e: any) => {
-        const newLang = e.target.value;
+    const handleLanguageChange = (newLang: string) => {
         i18n.changeLanguage(newLang);
     };
 
     return (
-        <FormControl fullWidth size="small">
-            <InputLabel id={uniqueId}>Language</InputLabel>
-            <Select
-                id="languageSwitcher"
-                value={i18n.language}
-                labelId={uniqueId}
-                label="Language"
-                onChange={handleLanguageChange}
-            >
-                <MenuItem value="en">English</MenuItem>
-                <MenuItem value="pl">Polish</MenuItem>
-            </Select>
-        </FormControl>
+        <Select value={i18n.language} onValueChange={handleLanguageChange}>
+            <SelectTrigger className="w-full h-10">
+                <SelectValue placeholder="Language" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="pl">Polish</SelectItem>
+            </SelectContent>
+        </Select>
     );
 };
 

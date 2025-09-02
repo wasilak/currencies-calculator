@@ -1,0 +1,131 @@
+# DevOps and Docker Development Rules
+
+## Containerization
+
+### Docker Configuration
+- Use multi-stage builds for optimization
+- Base image: Alpine Linux for smaller size
+- Copy built frontend assets to container
+- Expose port 3000 for the application
+- Use non-root user when possible
+
+### Docker Compose
+- Use `docker-compose.yml` for basic setup
+- Use `docker-compose.prometheus.yml` for full monitoring stack
+- Include Prometheus and Grafana services
+- Use named volumes for persistent data
+- Set proper environment variables
+
+## CI/CD Pipeline
+
+### Drone CI Configuration
+- Use `.drone.yml` for CI/CD pipeline
+- Build and test on every commit
+- Deploy to staging/production environments
+- Use Docker images for consistency
+- Include security scanning
+
+### Build Process
+- Frontend: `yarn build` for production assets
+- Backend: `go build` for binary
+- Docker: Multi-stage build for optimization
+- Assets: Copy built frontend to container
+
+## Monitoring and Observability
+
+### Prometheus Integration
+- Enable metrics endpoint at `/metrics`
+- Collect currency rate metrics
+- Support external Prometheus server
+- Use proper metric naming conventions
+- Include labels for better querying
+
+### Configuration Files
+- `prometheus.yml`: Prometheus server configuration
+- Scrape interval: 15 seconds
+- Target: application on port 3000
+- Metrics path: `/metrics`
+
+### Grafana Integration
+- Use Grafana for visualization
+- Pre-configured dashboards
+- Historical data analysis
+- Currency rate trends
+
+## Environment Variables
+
+### Application Configuration
+- `CC_ENABLE_PROMETHEUS_UI`: Enable Prometheus UI
+- `CC_PROMETHEUS_URL`: External Prometheus server URL
+- `CC_PROMETHEUS_INSECURE`: Skip SSL verification
+- `CC_LOG_LEVEL`: Logging level (debug, info, error)
+- `CC_LOG_FORMAT`: Log format (json, plain)
+- `CC_OTEL_ENABLED`: Enable OpenTelemetry
+
+### Docker Environment
+- Use environment variables for configuration
+- Support both development and production
+- Use secrets for sensitive data
+- Validate configuration on startup
+
+## Security Best Practices
+
+### Container Security
+- Use minimal base images
+- Scan for vulnerabilities
+- Keep dependencies updated
+- Use non-root user
+- Implement proper logging
+
+### Network Security
+- Use internal networks in Docker Compose
+- Expose only necessary ports
+- Use HTTPS in production
+- Implement proper CORS policies
+
+## Deployment Strategies
+
+### Development
+- Use Docker Compose for local development
+- Hot reload for frontend changes
+- Debug logging enabled
+- Local Prometheus for testing
+
+### Production
+- Use optimized Docker images
+- Implement health checks
+- Use proper resource limits
+- Monitor application metrics
+- Implement proper backup strategies
+
+## Performance Optimization
+
+### Container Optimization
+- Use multi-stage builds
+- Minimize layer count
+- Use .dockerignore to exclude unnecessary files
+- Optimize base image selection
+
+### Resource Management
+- Set memory and CPU limits
+- Monitor resource usage
+- Implement proper caching
+- Use connection pooling
+
+## Troubleshooting
+
+### Common Issues
+- Port conflicts in Docker Compose
+- Memory issues with large builds
+- Network connectivity problems
+- Configuration validation errors
+
+### Debugging
+- Use Docker logs for troubleshooting
+- Implement proper error handling
+- Use health checks for monitoring
+- Monitor resource usage
+description:
+globs:
+alwaysApply: true
+---

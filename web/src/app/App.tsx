@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { CurrenciesSelect } from "./lib/CurrenciesSelect"
 import { CurrenciesHeader } from "./lib/CurrenciesHeader"
-import { Model, WalutaPL, Rate } from "./lib/models"
+import { Model, Rate } from "./lib/models"
 import { GetCurrencies } from "./lib/api"
 import LanguageDetector from 'i18next-browser-languagedetector';
 
@@ -10,17 +10,14 @@ import { useTranslation } from "react-i18next";
 import { initReactI18next } from "react-i18next";
 import Translations from "./lib/locales";
 
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-
-const defaultTheme = createTheme();
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { Input } from "./components/ui/input";
+import { Badge } from "./components/ui/badge";
+import ChartButton from "./components/chart-button";
 
 const resources = Translations()
 
-const defaultCurrency = WalutaPL.code;
+const defaultCurrency = "PLN"; // PLN is the base currency (baseline = 1)
 
 i18next.use(LanguageDetector).use(initReactI18next).init({
     resources,
@@ -36,12 +33,14 @@ const App = () => {
     const { t } = useTranslation();
 
     const midRateCalculate = useCallback((selected: string): string => {
-        if (currencies) {
-            return currencies.data.rates.filter((value: Rate) => {
-                return value.code == selected;
-            })[0].mid;
+        if (currencies && currencies.data && currencies.data.rates) {
+            const rate = currencies.data.rates.find((value: Rate) => {
+                return value.code === selected;
+            });
+            if (rate) {
+                return rate.mid;
+            }
         }
-
         return '1.0';
     }, [currencies]);
 
@@ -102,33 +101,66 @@ const App = () => {
     }, [midRateTo, midRateFrom, amountFrom, doCalculation])
 
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="sm" sx={{ mt: 2 }}>
-                <CssBaseline />
-                <Box>
-                    <Box sx={{ mb: 3 }}>
+        <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+            <div className="container mx-auto px-4 py-8">
+                <Card className="max-w-2xl mx-auto shadow-xl">
+                    <CardHeader className="text-center pb-6">
+                        <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            Currency Converter
+                        </CardTitle>
+                        <p className="text-muted-foreground">
+                            Real-time exchange rates from National Bank of Poland
+                        </p>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
                         <CurrenciesHeader currencies={currencies}></CurrenciesHeader>
-                    </Box>
 
-                    <Box sx={{ mb: 3 }}>
-                        <CurrenciesSelect currencies={currencies} selected={selectedFrom} onChange={handleChangeFrom} midRate={midRateFrom} label={t("from")}></CurrenciesSelect>
-                    </Box>
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <CurrenciesSelect currencies={currencies} selected={selectedFrom} onChange={handleChangeFrom} midRate={midRateFrom} label={t("from")}></CurrenciesSelect>
+                            </div>
 
-                    <Box sx={{ mb: 3 }}>
-                        <CurrenciesSelect currencies={currencies} selected={selectedTo} onChange={handleChangeTo} midRate={midRateTo} label={t("to")}></CurrenciesSelect>
-                    </Box>
+                            <div className="space-y-2">
+                                <CurrenciesSelect currencies={currencies} selected={selectedTo} onChange={handleChangeTo} midRate={midRateTo} label={t("to")}></CurrenciesSelect>
+                            </div>
 
-                    <Box sx={{ mb: 3 }}>
-                        <TextField fullWidth label={t("amount")} variant="outlined" value={amountFrom} onChange={handleAmountFrom} />
-                    </Box>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    {t("amount")}
+                                </label>
+                                <Input
+                                    type="number"
+                                    value={amountFrom}
+                                    onChange={handleAmountFrom}
+                                    className="w-full text-lg p-6"
+                                />
+                            </div>
 
-                    <Box>
-                        <TextField fullWidth disabled label={t("value_in_selected_currency")} variant="outlined" value={`${amountFrom} ${selectedFrom} = ${amountTo} ${selectedTo}`} />
-                    </Box>
-                </Box>
-            </Container>
-        </ThemeProvider>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    {t("value_in_selected_currency")}
+                                </label>
+                                <div className="w-full rounded-lg border border-input bg-background px-4 py-6 text-lg ring-offset-background">
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-medium">
+                                            {amountFrom} {selectedFrom}
+                                        </span>
+                                        <Badge variant="secondary" className="text-lg px-3 py-1">=</Badge>
+                                        <span className="font-bold text-2xl text-primary">
+                                            {amountTo.toFixed(2)} {selectedTo}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div className="flex justify-center pt-4">
+                                <ChartButton fromCurrency={selectedFrom} toCurrency={selectedTo} />
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
     );
 }
 

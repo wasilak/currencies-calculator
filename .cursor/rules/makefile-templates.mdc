@@ -1,0 +1,185 @@
+# Makefile Templates and Build Automation
+
+## Current Makefile Structure
+
+Based on the existing Makefile, here are the standard targets and patterns:
+
+### Basic Targets
+```makefile
+.PHONY install: yarn
+.PHONY dev: lint vite-dev go
+.PHONY prod: lint vite go
+.PHONY build-all-prod: install lint prod
+```
+
+### Frontend Build Commands
+- `yarn`: Install frontend dependencies
+- `vite`: Build frontend for production
+- `vite-dev`: Build frontend for development
+- `lint`: Run ESLint on frontend code
+
+### Backend Build Commands
+- `go`: Build Go binary to `./tmp/main`
+
+## Build Workflow Patterns
+
+### Development Workflow
+1. `yarn install` - Install dependencies
+2. `yarn buildDev` - Build frontend for development
+3. `go build -o ./tmp/main .` - Build Go binary
+4. `go run main.go` - Run application
+
+### Production Workflow
+1. `yarn install` - Install dependencies
+2. `yarn lint` - Lint frontend code
+3. `yarn build` - Build frontend for production
+4. `go build -o ./tmp/main .` - Build Go binary
+
+### Docker Build Workflow
+1. Build frontend assets
+2. Build Go binary
+3. Create Docker image with assets and binary
+4. Run container with proper configuration
+
+## Makefile Best Practices
+
+### Target Organization
+- Group related targets together
+- Use descriptive target names
+- Include dependencies between targets
+- Use `.PHONY` for non-file targets
+
+### Error Handling
+- Check for required tools and dependencies
+- Fail fast on errors
+- Provide helpful error messages
+- Use proper exit codes
+
+### Environment Support
+- Support different environments (dev, staging, prod)
+- Use environment variables for configuration
+- Validate environment setup
+- Provide environment-specific targets
+
+## Common Makefile Targets
+
+### Setup and Installation
+```makefile
+install: yarn
+	@echo "Installing dependencies..."
+
+yarn:
+	@yarn install
+
+setup: install
+	@echo "Setting up development environment..."
+```
+
+### Development
+```makefile
+dev: lint vite-dev go
+	@echo "Starting development build..."
+
+vite-dev:
+	@yarn buildDev
+
+go:
+	@go build -o ./tmp/main .
+
+run: go
+	@go run main.go
+```
+
+### Production
+```makefile
+prod: lint vite go
+	@echo "Building for production..."
+
+vite:
+	@yarn build
+
+build-all-prod: install lint prod
+	@echo "Complete production build finished"
+```
+
+### Testing and Quality
+```makefile
+lint:
+	@yarn lint
+
+test:
+	@go test ./...
+	@yarn test
+
+check: lint test
+	@echo "All checks passed"
+```
+
+### Docker Operations
+```makefile
+docker-build:
+	@docker build -t currencies-calculator .
+
+docker-run:
+	@docker run -p 3000:3000 currencies-calculator
+
+docker-compose-up:
+	@docker-compose up -d
+```
+
+### Cleanup
+```makefile
+clean:
+	@rm -rf ./tmp
+	@rm -rf ./web/assets/dist
+	@echo "Cleaned build artifacts"
+
+clean-all: clean
+	@yarn cache clean
+	@go clean
+	@echo "Cleaned all artifacts and caches"
+```
+
+## Environment-Specific Configurations
+
+### Development Environment
+- Enable debug logging
+- Use development frontend build
+- Enable hot reload
+- Use local Prometheus
+
+### Production Environment
+- Optimize builds
+- Enable production logging
+- Use production frontend build
+- Configure external Prometheus
+
+### Staging Environment
+- Mirror production configuration
+- Enable additional debugging
+- Use staging-specific settings
+- Test deployment procedures
+
+## Build Optimization
+
+### Frontend Optimization
+- Use production build mode
+- Enable code splitting
+- Optimize bundle size
+- Minify and compress assets
+
+### Backend Optimization
+- Use release build flags
+- Strip debug information
+- Optimize binary size
+- Enable compiler optimizations
+
+### Docker Optimization
+- Use multi-stage builds
+- Minimize layer count
+- Use appropriate base images
+- Optimize asset copying
+description:
+globs:
+alwaysApply: true
+---

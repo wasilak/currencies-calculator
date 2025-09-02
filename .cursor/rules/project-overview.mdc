@@ -1,0 +1,33 @@
+# Currencies Calculator - Project Rules
+
+This is a currency converter application built with Go backend and React frontend, featuring real-time exchange rates from the National Bank of Poland and optional Prometheus metrics integration.
+
+## Project Structure
+
+- **Backend**: Go with Echo framework, located in root and `libs/` directory
+- **Frontend**: React with TypeScript, located in `web/src/` directory
+- **Build System**: Vite for frontend, Go modules for backend
+- **Package Manager**: Yarn for frontend dependencies
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **Internationalization**: i18next for multi-language support
+- **Metrics**: Prometheus integration with optional external server
+
+## Key Technologies
+
+- **Backend**: Go 1.25+, Echo v4, Viper for config, Prometheus client
+- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **DevOps**: Docker, Drone CI, Prometheus, Grafana
+- **Observability**: OpenTelemetry, structured logging
+
+## Development Workflow
+
+- Use `yarn install` to install frontend dependencies
+- Use `yarn build` to build frontend for production
+- Use `yarn buildDev` to build frontend for development
+- Use `yarn lint` to run ESLint
+- Use `go build -o ./tmp/main .` to build Go binary
+- Use `go run main.go` to run the application locally
+description:
+globs:
+alwaysApply: true
+---

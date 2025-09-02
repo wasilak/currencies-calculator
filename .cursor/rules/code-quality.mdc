@@ -1,0 +1,159 @@
+# Code Quality and Development Workflow Rules
+
+## Code Standards
+
+### General Principles
+- Write clean, readable, and maintainable code
+- Follow established patterns and conventions
+- Use meaningful variable and function names
+- Add comments for complex logic
+- Keep functions small and focused
+
+### Code Organization
+- Separate concerns (business logic, UI, configuration)
+- Use proper file and directory structure
+- Group related functionality together
+- Avoid circular dependencies
+
+## Testing Strategy
+
+### Backend Testing (Go)
+- Write unit tests for all business logic
+- Test configuration parsing and validation
+- Test API endpoints with proper HTTP status codes
+- Use Go's built-in testing package
+- Aim for good test coverage
+
+### Frontend Testing (React/TypeScript)
+- Test component rendering and behavior
+- Test user interactions and state changes
+- Test API integration and error handling
+- Use React Testing Library for component tests
+- Test accessibility features
+
+### Integration Testing
+- Test end-to-end workflows
+- Test API integration between frontend and backend
+- Test configuration and environment variables
+- Test Docker container builds and deployment
+
+## Code Linting and Formatting
+
+### Go Code
+- Use `gofmt` for code formatting
+- Use `golint` or `golangci-lint` for linting
+- Follow Go naming conventions
+- Use proper error handling patterns
+
+### TypeScript/JavaScript Code
+- Use ESLint for linting
+- Use Prettier for code formatting (if configured)
+- Follow TypeScript best practices
+- Use strict type checking
+
+### Configuration Files
+- Use consistent formatting for configuration files
+- Validate configuration on startup
+- Use environment-specific configurations
+- Document configuration options
+
+## Development Workflow
+
+### Git Workflow
+- Use meaningful commit messages
+- Create feature branches for new development
+- Review code before merging
+- Keep commits atomic and focused
+
+### Build Process
+- Use Makefile for common tasks
+- Ensure builds are reproducible
+- Test builds in clean environments
+- Validate all dependencies
+
+### Code Review
+- Review for functionality and correctness
+- Check for security vulnerabilities
+- Ensure proper error handling
+- Verify performance implications
+
+## Performance Guidelines
+
+### Backend Performance
+- Use caching for expensive operations
+- Implement proper connection pooling
+- Monitor memory usage
+- Use goroutines for concurrent operations
+- Profile code for bottlenecks
+
+### Frontend Performance
+- Optimize bundle size
+- Use code splitting where appropriate
+- Implement proper memoization
+- Optimize re-renders
+- Use lazy loading for components
+
+### Database and API
+- Minimize API calls
+- Use proper caching strategies
+- Implement rate limiting
+- Monitor response times
+- Handle errors gracefully
+
+## Security Best Practices
+
+### Input Validation
+- Validate all user inputs
+- Sanitize data before processing
+- Use proper type checking
+- Implement CSRF protection
+
+### Authentication and Authorization
+- Implement proper authentication
+- Use secure session management
+- Validate permissions
+- Log security events
+
+### Data Protection
+- Encrypt sensitive data
+- Use HTTPS in production
+- Implement proper CORS policies
+- Follow OWASP guidelines
+
+## Documentation
+
+### Code Documentation
+- Document complex functions and algorithms
+- Use clear and concise comments
+- Document API endpoints
+- Keep documentation up to date
+
+### Project Documentation
+- Maintain comprehensive README
+- Document setup and deployment procedures
+- Include troubleshooting guides
+- Document configuration options
+
+## Monitoring and Debugging
+
+### Logging
+- Use structured logging
+- Include relevant context in log messages
+- Use appropriate log levels
+- Implement log rotation
+
+### Error Handling
+- Implement proper error handling
+- Provide meaningful error messages
+- Log errors for debugging
+- Implement graceful degradation
+
+### Metrics and Monitoring
+- Collect relevant metrics
+- Monitor application health
+- Set up alerts for critical issues
+- Track performance metrics
+description:
+globs:
+alwaysApply: true
+---

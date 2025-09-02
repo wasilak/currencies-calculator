@@ -12,6 +12,7 @@
         "forceConsistentCasingInFileNames": true, // Ensures file name casing consistency
         "resolveJsonModule": true, // Allows importing JSON modules
         "isolatedModules": true, // Necessary for compatibility with Vite
+        "lib": ["dom", "dom.iterable", "esnext"], // Include DOM types
         "types": [
             "node",
             "vite/client" // Includes Vite client types for HMR and Vite-specific globals

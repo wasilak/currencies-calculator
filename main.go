@@ -25,6 +25,9 @@ func main() {
 	flag.Bool("otel.enabled", true, "OTEL enabled")
 	flag.String("log.format", "json", "log format")
 	flag.String("log.level", "info", "log level")
+	flag.Bool("enable-prometheus-ui", false, "enable prometheus metrics UI")
+	flag.String("prometheus-url", "", "external Prometheus server URL for historical data (e.g., http://prometheus:9090)")
+	flag.Bool("prometheus-insecure", false, "skip SSL verification for external Prometheus server")
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
@@ -39,6 +42,9 @@ func main() {
 	viper.SetDefault("log.level", "info")
 	viper.SetDefault("log.format", "json")
 	viper.SetDefault("otel.enabled", false)
+	viper.SetDefault("enable-prometheus-ui", false)
+	viper.SetDefault("prometheus-url", "")
+	viper.SetDefault("prometheus-insecure", false)
 
 	if strings.EqualFold(viper.GetString("log.level"), "debug") {
 		slog.InfoContext(ctx, "settings", "value", viper.AllSettings())

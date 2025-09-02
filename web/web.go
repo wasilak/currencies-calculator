@@ -134,6 +134,13 @@ func (ws *WebServer) Init() {
 	e.Use(slogecho.New(slog.Default()))
 	e.Use(middleware.Recover())
 
+	// Register our custom API routes before the Prometheus middleware
+	e.GET("/", ws.mainRoute)
+	e.GET("/api/get/", ws.apiGetRoute)
+	e.GET("/api/get/:force", ws.apiGetRoute)
+	e.GET("/api/prometheus-metrics", ws.apiPrometheusMetricsRoute)
+	slog.Debug("Registered custom routes")
+
 	// Enable metrics middleware
 	p := prometheus.NewPrometheus("echo", nil)
 	p.Use(e)
@@ -141,12 +148,9 @@ func (ws *WebServer) Init() {
 	assetHandler := http.FileServer(ws.getEmbededAssets())
 	e.GET("/assets/*", echo.WrapHandler(http.StripPrefix("/assets/", assetHandler)))
 
-	e.GET("/", ws.mainRoute)
-	e.GET("/api/get/", ws.apiGetRoute)
-	e.GET("/api/get/:force", ws.apiGetRoute)
-
 	// run in background
 	libs.PrometheusSetup(e, ws.Cache)
+	slog.Debug("Registered Prometheus routes")
 
 	e.Logger.Fatal(e.Start(viper.GetString("listen")))
 }

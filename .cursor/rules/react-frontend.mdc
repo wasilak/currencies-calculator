@@ -1,0 +1,107 @@
+# React Frontend Development Rules
+
+## Project Structure
+- Source code: `web/src/` directory
+- Components: `web/src/app/components/`
+- UI components: `web/src/app/components/ui/` (shadcn/ui)
+- Library utilities: `web/src/app/lib/`
+- Main app: `web/src/app/App.tsx`
+- Entry point: `web/src/app/index.tsx`
+
+## Technology Stack
+- **Framework**: React 19 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui with Radix UI
+- **State Management**: React hooks (useState, useEffect, useCallback)
+- **HTTP Client**: Axios
+- **Internationalization**: i18next
+- **Charts**: Recharts
+- **Icons**: Lucide React
+
+## Coding Standards
+
+### TypeScript Configuration
+- Use strict TypeScript configuration
+- Target: ESNext
+- Module: ESNext
+- JSX: react-jsx (React 17+)
+- Module resolution: bundler (for Vite compatibility)
+- Include DOM types and Node types
+
+### Component Structure
+- Use functional components with hooks
+- Define props interfaces at the top of component files
+- Use named exports for components
+- Keep components focused and single-purpose
+- Use TypeScript for all props and state
+
+### State Management
+- Use React hooks for local state
+- Prefer `useState` for simple state
+- Use `useEffect` for side effects
+- Use `useCallback` for memoized functions
+- Store user preferences in localStorage
+
+### Styling Guidelines
+- Use Tailwind CSS for styling
+- Use shadcn/ui components as base
+- Follow utility-first CSS approach
+- Use CSS variables for theming
+- Support dark/light theme switching
+
+### Component Patterns
+- Use composition over inheritance
+- Keep components small and focused
+- Extract reusable logic into custom hooks
+- Use proper TypeScript types for all data
+
+### Internationalization
+- Use i18next for translations
+- Support English and Polish languages
+- Use `useTranslation` hook
+- Store translations in `web/src/app/lib/locales.ts`
+
+### API Integration
+- Use Axios for HTTP requests
+- Define API functions in `web/src/app/lib/api.ts`
+- Use TypeScript interfaces for API responses
+- Handle loading and error states
+- Implement proper error handling
+
+### Performance
+- Use React.memo for expensive components
+- Implement proper dependency arrays in useEffect
+- Use useCallback for event handlers
+- Optimize re-renders with proper state management
+
+## File Naming Conventions
+- Use PascalCase for component files: `ComponentName.tsx`
+- Use camelCase for utility files: `api.ts`, `utils.ts`
+- Use kebab-case for CSS files: `component-name.css`
+
+## ESLint Configuration
+- Use TypeScript ESLint rules
+- Allow `any` types when necessary
+- Warn on unused variables (ignore args starting with `_`)
+- Use React hooks rules
+- Disable `react/react-in-jsx-scope` (not needed in React 17+)
+
+## Build and Development
+- Use `yarn dev` for development server
+- Use `yarn build` for production build
+- Use `yarn buildDev` for development build
+- Use `yarn lint` for code linting
+- Use `yarn serve` for preview build
+
+## UI/UX Guidelines
+- Follow modern design principles
+- Use consistent spacing and typography
+- Implement responsive design
+- Support accessibility features
+- Use proper color contrast
+- Implement smooth transitions and animations
+description:
+globs:
+alwaysApply: true
+---

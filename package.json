@@ -4,15 +4,22 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@emotion/react": "~11",
-    "@emotion/styled": "~11",
-    "@mui/material": "~7.3.0",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-select": "^2.1.5",
+    "@radix-ui/react-slot": "^1.1.2",
     "axios": "~1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "i18next": "~25.4.0",
     "i18next-browser-languagedetector": "~8",
+    "lucide-react": "^0.542.0",
     "react": "~19",
     "react-dom": "~19",
-    "react-i18next": "~15"
+    "react-i18next": "~15",
+    "recharts": "^3.1.2",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "scripts": {
     "dev": "vite",
@@ -46,10 +53,13 @@
     "@typescript-eslint/eslint-plugin": "~8",
     "@typescript-eslint/parser": "~8",
     "@vitejs/plugin-react": "~5.0.0",
+    "autoprefixer": "^10.4.21",
     "dotenv": "~17.2.0",
     "eslint": "~9",
     "eslint-plugin-react": "~7",
     "eslint-plugin-react-hooks": "~5",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.0",
     "typescript": "~5",
     "vite": "~7.1.0"
   }

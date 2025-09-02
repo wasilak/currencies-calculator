@@ -1,39 +1,42 @@
-// import { FunctionComponent, useState } from 'react';
 import { Rate } from "./models"
-import { useTranslation } from "react-i18next";
-import Box from '@mui/material/Box';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import Chip from '@mui/material/Chip';
+import { useTranslation } from "react-i18next"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select"
+import { Badge } from "../components/ui/badge"
 
 export const CurrenciesSelect = ({ currencies, selected, onChange, midRate, label }: any) => {
     const { t } = useTranslation();
 
-    const uniqueId = (Date.now() * Math.random()).toString();
-
     return (
-        <Box>
-            <FormControl fullWidth sx={{ mb: 1 }}>
-                <InputLabel id={uniqueId}>{label}</InputLabel>
-                <Select
-                    labelId={uniqueId}
-                    value={selected}
-                    label={label}
-                    onChange={onChange}
-                >
+        <div className="space-y-3">
+            <label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                {label}
+            </label>
+            <Select value={selected} onValueChange={(value) => onChange({ target: { value } })}>
+                <SelectTrigger className="w-full h-12 text-base">
+                    <SelectValue placeholder={label} />
+                </SelectTrigger>
+                <SelectContent>
                     {currencies &&
                         currencies.data.rates.map(function (rate: Rate) {
                             return (
-                                <MenuItem key={rate.code} value={rate.code}>{rate.code} - {rate.currency}</MenuItem>
+                                <SelectItem key={rate.code} value={rate.code}>
+                                    {rate.code} - {rate.currency}
+                                </SelectItem>
                             );
                         })
                     }
-                </Select>
-            </FormControl>
+                </SelectContent>
+            </Select>
 
-            <Chip label={`${t("mid_rate")}: ${midRate} PLN`} color="primary" variant="outlined" />
-        </Box>
+            <Badge variant="secondary" className="w-full justify-center py-2 text-base">
+                {t("mid_rate")}: {midRate} PLN
+            </Badge>
+        </div>
     );
 }

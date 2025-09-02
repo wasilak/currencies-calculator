@@ -1,0 +1,94 @@
+# Quick Reference Guide
+
+## Essential Commands
+
+### Setup
+```bash
+yarn install          # Install frontend dependencies
+go mod download       # Download Go dependencies
+```
+
+### Development
+```bash
+yarn dev              # Start frontend dev server
+go run main.go        # Run backend server
+make dev              # Build both frontend and backend for dev
+```
+
+### Building
+```bash
+yarn build            # Build frontend for production
+yarn buildDev         # Build frontend for development
+go build -o ./tmp/main .  # Build Go binary
+make prod             # Build both for production
+```
+
+### Quality Checks
+```bash
+yarn lint             # Lint frontend code
+make lint             # Run linting
+```
+
+### Docker
+```bash
+docker build -t currencies-calculator .  # Build Docker image
+docker-compose up -d  # Start with Docker Compose
+```
+
+## Key Configuration
+
+### Environment Variables
+- `CC_ENABLE_PROMETHEUS_UI=true` - Enable Prometheus UI
+- `CC_PROMETHEUS_URL=http://prometheus:9090` - External Prometheus
+- `CC_LOG_LEVEL=debug` - Set log level
+- `CC_LOG_FORMAT=json` - Set log format
+
+### Ports
+- `3000` - Main application
+- `9090` - Prometheus (if enabled)
+- `3001` - Grafana (if using Docker Compose)
+
+## Project Structure
+
+```
+├── main.go              # Go application entry point
+├── libs/                # Go library code
+├── web/                 # Frontend application
+│   ├── src/app/         # React components
+│   ├── assets/          # Built assets
+│   └── views/           # HTML templates
+├── Dockerfile           # Container definition
+├── docker-compose.yml   # Local development
+└── Makefile            # Build automation
+```
+
+## Technology Stack
+
+- **Backend**: Go 1.25+, Echo v4, Viper, Prometheus
+- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **DevOps**: Docker, Drone CI, Prometheus, Grafana
+- **Observability**: OpenTelemetry, structured logging
+
+## Common Patterns
+
+### Go Backend
+- Use Viper for configuration
+- Structured logging with context
+- Echo framework for HTTP server
+- Prometheus metrics integration
+
+### React Frontend
+- Functional components with hooks
+- TypeScript for type safety
+- Tailwind CSS for styling
+- i18next for internationalization
+
+### Development Workflow
+- Use Makefile for common tasks
+- Docker Compose for local development
+- ESLint for code quality
+- Prometheus for monitoring
+description:
+globs:
+alwaysApply: true
+---
