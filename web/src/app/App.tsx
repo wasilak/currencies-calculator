@@ -16,8 +16,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 
-import LoaderComponent from "./lib/Loader";
-
 const defaultTheme = createTheme();
 
 const resources = Translations()
@@ -105,32 +103,30 @@ const App = () => {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <LoaderComponent>
-                <Container component="main" maxWidth="sm" sx={{ mt: 2 }}>
-                    <CssBaseline />
-                    <Box>
-                        <Box sx={{ mb: 3 }}>
-                            <CurrenciesHeader currencies={currencies}></CurrenciesHeader>
-                        </Box>
-
-                        <Box sx={{ mb: 3 }}>
-                            <CurrenciesSelect currencies={currencies} selected={selectedFrom} onChange={handleChangeFrom} midRate={midRateFrom} label={t("from")}></CurrenciesSelect>
-                        </Box>
-
-                        <Box sx={{ mb: 3 }}>
-                            <CurrenciesSelect currencies={currencies} selected={selectedTo} onChange={handleChangeTo} midRate={midRateTo} label={t("to")}></CurrenciesSelect>
-                        </Box>
-
-                        <Box sx={{ mb: 3 }}>
-                            <TextField fullWidth label={t("amount")} variant="outlined" value={amountFrom} onChange={handleAmountFrom} />
-                        </Box>
-
-                        <Box>
-                            <TextField fullWidth disabled label={t("value_in_selected_currency")} variant="outlined" value={`${amountFrom} ${selectedFrom} = ${amountTo} ${selectedTo}`} />
-                        </Box>
+            <Container component="main" maxWidth="sm" sx={{ mt: 2 }}>
+                <CssBaseline />
+                <Box>
+                    <Box sx={{ mb: 3 }}>
+                        <CurrenciesHeader currencies={currencies}></CurrenciesHeader>
                     </Box>
-                </Container>
-            </LoaderComponent>
+
+                    <Box sx={{ mb: 3 }}>
+                        <CurrenciesSelect currencies={currencies} selected={selectedFrom} onChange={handleChangeFrom} midRate={midRateFrom} label={t("from")}></CurrenciesSelect>
+                    </Box>
+
+                    <Box sx={{ mb: 3 }}>
+                        <CurrenciesSelect currencies={currencies} selected={selectedTo} onChange={handleChangeTo} midRate={midRateTo} label={t("to")}></CurrenciesSelect>
+                    </Box>
+
+                    <Box sx={{ mb: 3 }}>
+                        <TextField fullWidth label={t("amount")} variant="outlined" value={amountFrom} onChange={handleAmountFrom} />
+                    </Box>
+
+                    <Box>
+                        <TextField fullWidth disabled label={t("value_in_selected_currency")} variant="outlined" value={`${amountFrom} ${selectedFrom} = ${amountTo} ${selectedTo}`} />
+                    </Box>
+                </Box>
+            </Container>
         </ThemeProvider>
 
     );
