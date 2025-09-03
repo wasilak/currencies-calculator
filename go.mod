@@ -8,7 +8,7 @@ require (
 	github.com/labstack/gommon v0.4.2
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/prometheus/client_golang v1.23.0
-	github.com/prometheus/common v0.66.0
+	github.com/prometheus/common v1.20.3
 	github.com/samber/slog-echo v1.17.1
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.20.1
