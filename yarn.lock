@@ -3092,9 +3092,9 @@ react-dom@~19:
     scheduler "^0.27.0"
 
 react-i18next@~17.0.0:
-  version "17.0.3"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-17.0.3.tgz#1a5c11dc70fdb5663f705fc15b10253a1fa035b0"
-  integrity sha512-x4xjvUNZ56T+zfXWNedNnCET9Xq1IBYWX7IsWo5cCQ/RT+Rm7GWqt0h9PShFi4IhyMnsdiu1C6Jc4DE+/S3PFQ==
+  version "17.0.7"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-17.0.7.tgz#f66e0f9a336e31b641d89bcb654d4aee21b5409c"
+  integrity sha512-rwtPXsb/zwzDafN+gytcjF5YnqGQQIRmCQ6DctBC1VSipRB8GD/MWEVrFP42vjMyuYydxWxM8CZRt+yiNuuoHg==
   dependencies:
     "@babel/runtime" "^7.29.2"
     html-parse-stringify "^3.0.1"
