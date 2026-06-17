@@ -4,7 +4,7 @@ go 1.25.4
 
 require (
 	github.com/labstack/echo-contrib v0.50.1
-	github.com/labstack/echo/v4 v4.15.4
+	github.com/labstack/echo/v4 v4.15.2
 	github.com/labstack/echo/v5 v5.2.1
 	github.com/labstack/gommon v0.5.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
