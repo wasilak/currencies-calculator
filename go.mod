@@ -11,7 +11,7 @@ require (
 	github.com/prometheus/client_golang v1.24.1
 	github.com/prometheus/common v0.70.1
 	github.com/samber/slog-echo v1.23.0
-	github.com/samber/slog-echo/v2 v2.0.0
+	github.com/samber/slog-echo/v2 v2.1.0
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
 	github.com/wasilak/loggergo v1.8.2
